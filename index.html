@@ -43,6 +43,23 @@ wall_globals = Array.from(wall_globals);
 wall_players = Array.from(wall_players);
 var wall_number=parseInt(wall_globals[0][1],10);
 
-document.getElementById("converted_script").innerHTML =user_varstring_full;
+var countof_user_globals = user_globals.length;
+var countof_user_player = user_players.length;
+var leng = user_globals.length;
+var newglobal = [];
+
+for (var i = 0; i<wall_globals.length; i++)
+{
+	newglobal.push(parseInt(wall_globals[i][1],10) + ":" + wall_globals[i][2]);
+}
+
+for (var i = 0; i<wall_globals.length; i++)
+{
+	newglobal.push(leng + ":" + wall_globals[i][2]);
+  leng+=1;
+}
+
+
+document.getElementById("converted_script").innerHTML =user_playerstring;
 }
 </script>
