@@ -2,28 +2,23 @@
 
     <p>Your Script:</p>
     <textarea id="comment_input"></textarea>
-     <p>Wall Script:</p>
-    <textarea id="comment_input"></textarea>
-     <p>Converted Script:</p>
-    <textarea id="comment_input"></textarea>
     <button onclick="myFunction()">Click me</button>
     </br>
     <span id="comment_result"></span>
 </section>
 
-textarea {
- width: 80%;
- height: 200px;
- padding: 15px 22px;
- box-sizing: border-box;
- border: 4px solid #ccc;
- border-radius: 5px;
- background-color: gray;
- resize: none;  
-}
-
+<script>
 function myFunction() {
 
-    var commentValue = document.getElementById("comment_input").value;
-    document.getElementById("comment_result").innerHTML =commentValue;
+    var input = document.getElementById("comment_input").value;
+
+var varstring = input.match(/(?<=variables\n{)[\s\S]*?(?=})/)[0];
+
+var globalstring = varstring.match(/(?<=global:\n)(?:\t\t\d+: \S*?\n)*/)[0];
+var playerstring = varstring.match(/(?<=player:\n)(?:\t\t\d+: \S*?\n)*/)[0];
+
+
+   
+document.getElementById("comment_result").innerHTML =globalstring;
 }
+</script>
