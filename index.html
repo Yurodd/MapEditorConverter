@@ -46,20 +46,23 @@ var wall_number=parseInt(wall_globals[0][1],10);
 var countof_user_globals = user_globals.length;
 var countof_user_player = user_players.length;
 var leng = user_globals.length;
-var newglobal = [];
-
-for (var i = 0; i<wall_globals.length; i++)
+var newuserglobal = [];
+var newwallglobal = [];
+//newglobal.push(user_globals);
+//newglobal.push(wall_globals);
+var index=0;
+for(index; index < user_globals.length;index++)
 {
-	newglobal.push(parseInt(wall_globals[i][1],10) + ":" + wall_globals[i][2]);
+newuserglobal[newuserglobal.length] = user_globals[newuserglobal.length][1] + ": " + user_globals[newuserglobal.length][2]
 }
 
-for (var i = 0; i<wall_globals.length; i++)
+for(var i = 0; i < wall_globals.length; i++)
 {
-	newglobal.push(leng + ":" + wall_globals[i][2]);
-  leng+=1;
+newuserglobal.push(parseInt(wall_globals[i][1],10) + index + ": " + wall_globals[i][2]);
+
 }
 
 
-document.getElementById("converted_script").innerHTML =newglobal;
+document.getElementById("converted_script").innerHTML = newuserglobal;
 }
 </script>
