@@ -3,10 +3,10 @@
     <p>Your Scriptz:</p>
     <textarea id="user_script"></textarea>
      <button onclick="myFunction()">Click me</button>
-    <p>Wall Scriptz:</p>
-    <textarea id="wall_script"></textarea>
      <p>Converted Scriptz:</p>
     <textarea id="converted_script"></textarea>
+    <p>Wall Scriptz:</p>
+    <textarea id="wall_script"></textarea>
    
     </br>
 
@@ -20,6 +20,8 @@ function myFunction() {
  
 var user_scriptOnly = user_script.match(/(?:variables\n?{[\s\S]*?})?[\s]*(?:subroutines\n?{[\s\S]*?})?([\s\S]*)/)[1];
 var user_varstring = user_script.match(/(?<=variables\n{)[\s\S]*?(?=})/)[0];
+var user_varstring_full = user_script.match(/(?:variables\n{)[\s\S]*?(\n})/)[0];
+var user_varstring_less = user_script.match(/(?:variables\n{)[\s\S]*?(\n})/)[0];
 var user_globalstring = user_varstring.match(/(?<=global:\n)(?:\t\t\d+: \S*?\n)*/)[0];
 var user_playerstring = user_varstring.match(/(?<=player:\n)(?:\t\t\d+: \S*?\n)*/)[0];
 var user_globals = user_globalstring.matchAll(/\t\t(\d+): (\S*)/g);
@@ -27,6 +29,20 @@ var user_players = user_playerstring.matchAll(/\t\t(\d+): (\S*)/g);
 user_globals = Array.from(user_globals);
 user_players = Array.from(user_players);
 var user_number=parseInt(user_globals[0][1],10);
-document.getElementById("converted_script").innerHTML =user_varstring;
+
+
+var wall_scriptOnly = wall_script.match(/(?:variables\n?{[\s\S]*?})?[\s]*(?:subroutines\n?{[\s\S]*?})?([\s\S]*)/)[1];
+var wall_varstring = wall_script.match(/(?<=variables\n{)[\s\S]*?(?=})/)[0];
+var wall_varstring_full = wall_script.match(/(?:variables\n{)[\s\S]*?(\n})/)[0];
+var wall_varstring_less = wall_script.match(/(?:variables\n{)[\s\S]*?(\n})/)[0];
+var wall_globalstring = wall_varstring.match(/(?<=global:\n)(?:\t\t\d+: \S*?\n)*/)[0];
+var wall_playerstring = wall_varstring.match(/(?<=player:\n)(?:\t\t\d+: \S*?\n)*/)[0];
+var wall_globals = wall_globalstring.matchAll(/\t\t(\d+): (\S*)/g);
+var wall_players = wall_playerstring.matchAll(/\t\t(\d+): (\S*)/g);
+wall_globals = Array.from(wall_globals);
+wall_players = Array.from(wall_players);
+var wall_number=parseInt(wall_globals[0][1],10);
+
+document.getElementById("converted_script").innerHTML =user_varstring_full;
 }
 </script>
