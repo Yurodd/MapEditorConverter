@@ -22,10 +22,10 @@ var user_scriptOnly = user_script.match(/(?:variables\n?{[\s\S]*?})?[\s]*(?:subr
 var user_varstring = user_script.match(/(?<=variables\n{)[\s\S]*?(?=})/)[0];
 var user_varstring_full = user_script.match(/(?:variables\n{)[\s\S]*?(\n})/)[0];
 var user_varstring_less = user_script.match(/(?:variables\n{)[\s\S]*?(\n})/)[0];
-var user_globalstring = user_varstring.match(/(?<=global:\n)(?:\t\t\d+: \S*?\n)*/)[0];
-var user_playerstring = user_varstring.match(/(?<=player:\n)(?:\t\t\d+: \S*?\n)*/)[0];
-var user_globals = user_globalstring.matchAll(/\t\t(\d+): (\S*)/g);
-var user_players = user_playerstring.matchAll(/\t\t(\d+): (\S*)/g);
+var user_globalstring = user_varstring.match(/(?<=global:\n)(?:\s+\d+: \S*?\n)*/)[0];
+var user_playerstring = user_varstring.match(/(?<=player:\n)(?:\s+\d+: \S*?\n)*/)[0];
+var user_globals = user_globalstring.matchAll(/\s+(\d+): (\S*)/g);
+var user_players = user_playerstring.matchAll(/\s+(\d+): (\S*)/g);
 user_globals = Array.from(user_globals);
 user_players = Array.from(user_players);
 var user_number=parseInt(user_globals[0][1],10);
@@ -35,10 +35,10 @@ var wall_scriptOnly = wall_script.match(/(?:variables\n?{[\s\S]*?})?[\s]*(?:subr
 var wall_varstring = wall_script.match(/(?<=variables\n{)[\s\S]*?(?=})/)[0];
 var wall_varstring_full = wall_script.match(/(?:variables\n{)[\s\S]*?(\n})/)[0];
 var wall_varstring_less = wall_script.match(/(?:variables\n{)[\s\S]*?(\n})/)[0];
-var wall_globalstring = wall_varstring.match(/(?<=global:\n)(?:\t\t\d+: \S*?\n)*/)[0];
-var wall_playerstring = wall_varstring.match(/(?<=player:\n)(?:\t\t\d+: \S*?\n)*/)[0];
-var wall_globals = wall_globalstring.matchAll(/\t\t(\d+): (\S*)/g);
-var wall_players = wall_playerstring.matchAll(/\t\t(\d+): (\S*)/g);
+var wall_globalstring = wall_varstring.match(/(?<=global:\n)(?:\s+\d+: \S*?\n)*/)[0];
+var wall_playerstring = wall_varstring.match(/(?<=player:\n)(?:\s+\d+: \S*?\n)*/)[0];
+var wall_globals = wall_globalstring.matchAll(/\s+(\d+): (\S*)/g);
+var wall_players = wall_playerstring.matchAll(/\s+(\d+): (\S*)/g);
 wall_globals = Array.from(wall_globals);
 wall_players = Array.from(wall_players);
 var wall_number=parseInt(wall_globals[0][1],10);
@@ -60,6 +60,6 @@ for (var i = 0; i<wall_globals.length; i++)
 }
 
 
-document.getElementById("converted_script").innerHTML =user_playerstring;
+document.getElementById("converted_script").innerHTML =newglobal;
 }
 </script>
