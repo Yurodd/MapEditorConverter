@@ -43,13 +43,10 @@ wall_globals = Array.from(wall_globals);
 wall_players = Array.from(wall_players);
 var wall_number=parseInt(wall_globals[0][1],10);
 
-var countof_user_globals = user_globals.length;
-var countof_user_player = user_players.length;
-var leng = user_globals.length;
 var newuserglobal = [];
-var newwallglobal = [];
-//newglobal.push(user_globals);
-//newglobal.push(wall_globals);
+var newuserplayer = [];
+//////////////////////////////////////////////////////////////////////////
+
 var index=0;
 for(index; index < user_globals.length;index++)
 {
@@ -59,10 +56,35 @@ newuserglobal[newuserglobal.length] = user_globals[newuserglobal.length][1] + ":
 for(var i = 0; i < wall_globals.length; i++)
 {
 newuserglobal.push(parseInt(wall_globals[i][1],10) + index + ": " + wall_globals[i][2]);
-
 }
 
+index = 0;
 
-document.getElementById("converted_script").innerHTML = newuserglobal;
+//////////////////////////////////////////////////////////////////////////
+
+for(index; index < user_players.length;index++)
+{
+newuserplayer[newuserplayer.length] = user_players[newuserplayer.length][1] + ": " + user_players[newuserplayer.length][2]
+}
+
+for(var i = 0; i < wall_players.length; i++)
+{
+newuserplayer.push(parseInt(wall_players[i][1],10) + index + ": " + wall_players[i][2]);
+}
+
+//////////////////////////////////////////////////////////////////////////
+var text="variables\n{\n\tglobal:\n";
+for(var i = 0; i<newuserglobal.length; i++)
+{
+	text = "\t\t" + text + newuserglobal[i] + "\n";
+}
+text = text + "\nplayer:\n"
+for(var i = 0; i<newuserplayer.length; i++)
+{
+	text = "\t\t" + text + newuserplayer[i] + "\n";
+}
+text = text + "}"
+document.getElementById("converted_script").innerHTML = text;
+
 }
 </script>
