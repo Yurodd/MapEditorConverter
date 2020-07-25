@@ -76,14 +76,18 @@ newuserplayer.push(parseInt(wall_players[i][1],10) + index + ": " + wall_players
 var text="variables\n{\n\tglobal:\n";
 for(var i = 0; i<newuserglobal.length; i++)
 {
-	text = "\t\t" + text + newuserglobal[i] + "\n";
+text = text + "\t\t";
+	text =  text + newuserglobal[i] + "\n";
 }
-text = text + "\nplayer:\n"
+text = text + "\n\tplayer:\n"
 for(var i = 0; i<newuserplayer.length; i++)
 {
-	text = "\t\t" + text + newuserplayer[i] + "\n";
+	text = text + "\t\t";
+	text =  text + newuserplayer[i] + "\n";
 }
 text = text + "}"
+
+text = text + "\n\n" + user_scriptOnly;
 document.getElementById("converted_script").innerHTML = text;
 
 }
