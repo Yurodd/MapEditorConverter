@@ -3,6 +3,8 @@
     <p>Your Scriptz:</p>
     <textarea id="comment_input"></textarea>
     <button onclick="myFunction()">Click me</button>
+     <p>Converted Scriptz:</p>
+    <textarea id="comment_input1"></textarea>
     </br>
     <span id="comment_result"></span>
 </section>
@@ -16,11 +18,8 @@ var varstring = input.match(/(?<=variables\n{)[\s\S]*?(?=})/)[0];
 
 var globalstring = varstring.match(/(?<=global:\n)(?:\t\t\d+: \S*?\n)*/)[0];
 var playerstring = varstring.match(/(?<=player:\n)(?:\t\t\d+: \S*?\n)*/)[0];
-var globals = globalstring.matchAll(/\t\t(\d+): (\S*)/g).map(g => g[2]);
-var players = playerstring.matchAll(/\t\t(\d+): (\S*)/g).map(g => g[2]);
-var subrs = subrstring.matchAll(/\t\t(\d+): (\S*)/g).map(g => g[2]);
 
-   
-document.getElementById("comment_result").innerHTML =globals;
+
+document.getElementById("comment_input1").innerHTML =globalstring;
 }
 </script>
