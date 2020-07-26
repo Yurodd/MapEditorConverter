@@ -2,33 +2,20 @@
 
     <p>Your Scriptz:</p>
     <textarea id="user_script"></textarea>
-    <p>Wall Scriptz:</p>
-    <textarea id="wall_script"></textarea>
+     <button onclick="myFunction()">Click me</button>
      <p>Converted Scriptz:</p>
     <textarea id="converted_script"></textarea>
-   
+    <p>Wall Scriptz:</p>
+    <textarea id="wall_script"></textarea>
    
     </br>
-<button onclick="myFunction()">Convert</button>
-</section>
 
-<style>
-textarea {
- width: 80%;
- height: 200px;
- padding: 15px 22px;
- box-sizing: border-box;
- border: 4px solid #ccc;
- border-radius: 5px;
- background-color: gray;
- resize: none;  
-}
-</style>
+</section>
 
 <script>
 function myFunction() {
 
-//document.getElementById("converted_script").innerHTML = "";
+document.getElementById("converted_script").innerHTML = "";
 
  var user_script = document.getElementById("user_script").value;
  var wall_script = document.getElementById("wall_script").value;
