@@ -43,7 +43,6 @@ if(/(?<=global:\n)(?:\s+\d+: \S*?\n)*/.test(user_script))
 {
 user_globalstring = user_varstring.match(/(?<=global:\n)(?:\s+\d+: \S*?\n)*/)[0];
 user_globals = user_globalstring.matchAll(/\s+(\d+): (\S*)/g);
-user_globals = Array.from(user_globals);
 }
 else
 {
@@ -57,7 +56,6 @@ if(/(?<=player:\n)(?:\s+\d+: \S*?\n)*/.test(user_script))
 {
 user_playerstring = user_varstring.match(/(?<=player:\n)(?:\s+\d+: \S*?\n)*/)[0];
 user_players = user_playerstring.matchAll(/\s+(\d+): (\S*)/g);
-user_players = Array.from(user_players);
 }
 else
 {
@@ -65,7 +63,8 @@ user_playerstring = "";
 user_players = "";
 }
 
-
+user_globals = Array.from(user_globals);
+user_players = Array.from(user_players);
 
 
 
@@ -117,7 +116,9 @@ for(index; index < user_globals.length;index++)
 {
 newuserglobal[newuserglobal.length] = user_globals[newuserglobal.length][1] + ": " + user_globals[newuserglobal.length][2]
 }
+if(/(?<=global:\n)(?:\s+\d+: \S*?\n)*/.test(user_script))
 index = parseInt(user_globals[newuserglobal.length-1][1],10) + 1;
+
 for(var i = 0; i < wall_globals.length; i++)
 {
 newuserglobal.push(parseInt(wall_globals[i][1],10) + index + ": " + wall_globals[i][2]);
@@ -131,6 +132,7 @@ for(index; index < user_players.length;index++)
 {
 newuserplayer[newuserplayer.length] = user_players[newuserplayer.length][1] + ": " + user_players[newuserplayer.length][2]
 }
+if(/(?<=player:\n)(?:\s+\d+: \S*?\n)*/.test(user_script))
 index = parseInt(user_players[newuserplayer.length-1][1],10) + 1;
 for(var i = 0; i < wall_players.length; i++)
 {
