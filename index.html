@@ -191,8 +191,14 @@ text = text + user_substring + wall_substring + "\n";
 }
 
 
-text = text + "\n\n" + user_scriptOnly+ "\n" + wall_scriptOnly;
+text = text + "\n\n" + user_scriptOnly+ "\n" + 
+"disabled rule(\"------------WALL SCRIPT-------\")\n{\n"+
+"\tevent\n{\n\tOngoing - Global;\n}\n}"+
+wall_scriptOnly+
+"disabled rule(\"------------------------------\")\n{\n\n"+
+"\tevent\n{\n\tOngoing - Global;\n}\n}";
 document.getElementById("converted_script").innerHTML = text;
 
 }
 </script>
+
