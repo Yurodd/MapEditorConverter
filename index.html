@@ -36,21 +36,70 @@ document.getElementById("converted_script").innerHTML = "";
  
 var user_scriptOnly = user_script.match(/(?:variables\n?{[\s\S]*?})?[\s]*(?:subroutines\n?{[\s\S]*?})?([\s\S]*)/)[1];
 var user_varstring = user_script.match(/(?<=variables\n{)[\s\S]*?(?=})/)[0];
-var user_globalstring = user_varstring.match(/(?<=global:\n)(?:\s+\d+: \S*?\n)*/)[0];
-var user_playerstring = user_varstring.match(/(?<=player:\n)(?:\s+\d+: \S*?\n)*/)[0];
-var user_globals = user_globalstring.matchAll(/\s+(\d+): (\S*)/g);
-var user_players = user_playerstring.matchAll(/\s+(\d+): (\S*)/g);
+
+var user_globalstring;
+var user_globals;
+if(/(?<=global:\n)(?:\s+\d+: \S*?\n)*/.test(user_script))
+{
+user_globalstring = user_varstring.match(/(?<=global:\n)(?:\s+\d+: \S*?\n)*/)[0];
+user_globals = user_globalstring.matchAll(/\s+(\d+): (\S*)/g);
 user_globals = Array.from(user_globals);
+}
+else
+{
+user_globalstring = "";
+user_globals = "";
+}
+
+var user_playerstring;
+var user_players
+if(/(?<=player:\n)(?:\s+\d+: \S*?\n)*/.test(user_script))
+{
+user_playerstring = user_varstring.match(/(?<=player:\n)(?:\s+\d+: \S*?\n)*/)[0];
+user_players = user_playerstring.matchAll(/\s+(\d+): (\S*)/g);
 user_players = Array.from(user_players);
+}
+else
+{
+user_playerstring = "";
+user_players = "";
+}
+
+
+
 
 
 
 var wall_scriptOnly = wall_script.match(/(?:variables\n?{[\s\S]*?})?[\s]*(?:subroutines\n?{[\s\S]*?})?([\s\S]*)/)[1];
 var wall_varstring = wall_script.match(/(?<=variables\n{)[\s\S]*?(?=})/)[0];
-var wall_globalstring = wall_varstring.match(/(?<=global:\n)(?:\s+\d+: \S*?\n)*/)[0];
-var wall_playerstring = wall_varstring.match(/(?<=player:\n)(?:\s+\d+: \S*?\n)*/)[0];
-var wall_globals = wall_globalstring.matchAll(/\s+(\d+): (\S*)/g);
-var wall_players = wall_playerstring.matchAll(/\s+(\d+): (\S*)/g);
+
+var wall_globalstring;
+var wall_globals
+if(/(?<=global:\n)(?:\s+\d+: \S*?\n)*/.test(wall_script))
+{
+wall_globalstring = wall_varstring.match(/(?<=global:\n)(?:\s+\d+: \S*?\n)*/)[0];
+wall_globals = wall_globalstring.matchAll(/\s+(\d+): (\S*)/g);
+}
+else
+{
+wall_globalstring ="";
+wall_globals = "";
+}
+
+var wall_playerstring;
+var wall_players
+if(/(?<=player:\n)(?:\s+\d+: \S*?\n)*/.test(wall_script))
+{
+wall_playerstring = wall_varstring.match(/(?<=player:\n)(?:\s+\d+: \S*?\n)*/)[0];
+wall_players = wall_playerstring.matchAll(/\s+(\d+): (\S*)/g);
+}
+else
+{
+wall_playerstring = "";
+wall_players = "";
+}
+
+
 
 //var wall_sub = wall_substring.matchAll(/\s+(\d+): (\S*)/g);
 wall_globals = Array.from(wall_globals);
@@ -68,7 +117,7 @@ for(index; index < user_globals.length;index++)
 {
 newuserglobal[newuserglobal.length] = user_globals[newuserglobal.length][1] + ": " + user_globals[newuserglobal.length][2]
 }
-
+index = parseInt(user_globals[newuserglobal.length-1][1],10) + 1;
 for(var i = 0; i < wall_globals.length; i++)
 {
 newuserglobal.push(parseInt(wall_globals[i][1],10) + index + ": " + wall_globals[i][2]);
@@ -82,7 +131,7 @@ for(index; index < user_players.length;index++)
 {
 newuserplayer[newuserplayer.length] = user_players[newuserplayer.length][1] + ": " + user_players[newuserplayer.length][2]
 }
-
+index = parseInt(user_players[newuserplayer.length-1][1],10) + 1;
 for(var i = 0; i < wall_players.length; i++)
 {
 newuserplayer.push(parseInt(wall_players[i][1],10) + index + ": " + wall_players[i][2]);
@@ -201,4 +250,3 @@ document.getElementById("converted_script").innerHTML = text;
 
 }
 </script>
-
