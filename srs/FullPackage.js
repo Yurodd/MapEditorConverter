@@ -350,4 +350,4 @@ rule("Effect Creation")
     }
 }
 
-';
+'
