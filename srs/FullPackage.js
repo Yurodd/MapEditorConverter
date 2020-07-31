@@ -1,8 +1,7 @@
 
 "use strict";
 
-var RainOnMe = `
-variables
+var RainOnMe = `variables
 {
     global:
         0: _extendedGlobalCollection
@@ -351,5 +350,4 @@ rule("Effect Creation")
         	End;
         End;
     }
-}
-`
+}`
