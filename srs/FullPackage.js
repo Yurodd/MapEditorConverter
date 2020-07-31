@@ -1,1 +1,1 @@
-var RainOnMe = "fgdfg"
+var RainOnMe = "fgdfg";
