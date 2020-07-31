@@ -1,1 +1,1 @@
-wef
+var FullPackage = 'hiawhi';
