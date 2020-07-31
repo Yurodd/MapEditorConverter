@@ -1,4 +1,4 @@
-var RainOnMe = '
+var RainOnMe = "
 variables
 {
     global:
@@ -349,5 +349,4 @@ rule("Effect Creation")
         End;
     }
 }
-
-'
+"
