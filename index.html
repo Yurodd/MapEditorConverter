@@ -1,9 +1,17 @@
+
+
 <section class="body_right_comment_input">
 
     <p>Your Script:</p>
     <textarea id="user_script"></textarea>
     <p>Wall Script:</p>
     <textarea id="wall_script"></textarea>
+    
+<select id="thedropdown">
+  <option value="one">one</option>
+  <option value="two">two</option>
+</select>
+
      <p>Converted Script:</p>
     <textarea id="converted_script"></textarea>
 
@@ -36,16 +44,55 @@ button {
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
+	
+	
+select {
+    display: inline-block;
+    padding: 4px 3px 5px 5px;
+    width: 150px;
+    outline: none;
+    color: white;
+    border: 1px solid #C8BFC4;
+    border-radius: 4px;
+    box-shadow: inset 1px 1px 2px #ddd8dc;
+    background-color: #000000;
+}
+
+/*target non IE 9 and IE 10 as pointer events are not supported*/
+     .notIE label:after {
+        content:'';
+        width: 23px;
+        height: 23px;
+        position: absolute;
+        display: inline-block;
+        top: 4px;
+        right: 4px;
+        background: url(http://www.jewellerynetasia.com/portals/0/Images/social-network-service/google-plus.png) no-repeat right center white;
+        pointer-events: none;
+    }
+
+/*target IE 9 and IE 10:*/
+ @media screen and (min-width:0\0) {
+    .notIE label:after {
+        display:none;
+    }
+}	
+	
+	
 </style>
+
+<script src="src/decompiler/Fullpackage.js"></script>
 
 <script>
 function myFunction() {
 
-document.getElementById("converted_script").innerHTML = "";
+//document.getElementById("wall_script").innerHTML = "";
 
  var user_script = document.getElementById("user_script").value;
  var wall_script = document.getElementById("wall_script").value;
- 
+ var a = document.getElementById("thedropdown");
+var dropdownvalue = a.options[a.selectedIndex].value;
+
 var user_scriptOnly = user_script.match(/(?:variables\n?{[\s\S]*?})?[\s]*(?:subroutines\n?{[\s\S]*?})?([\s\S]*)/)[1];
 var user_varstring = user_script.match(/(?<=variables\n{)[\s\S]*?(?=})/)[0];
 
@@ -260,7 +307,12 @@ text = text + "\n\n" + user_scriptOnly+ "\n" +
 wall_scriptOnly+
 "disabled rule(\"------------------------------\")\n{\n\n"+
 "\tevent\n{\n\tOngoing - Global;\n}\n}";
-document.getElementById("converted_script").innerHTML = text;
+
+document.getElementById("converted_script").innerHTML = Fullpackage;
+
 
 }
+
+
+
 </script>
