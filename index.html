@@ -14,7 +14,7 @@
   <option value="Volvo">Volvo</option>
 </select>
 
-     <p>Converted Scriptz:</p>
+     <p>Converted Script:</p>
     <textarea id="converted_script"></textarea>
 
    
@@ -46,61 +46,24 @@ button {
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
-	
-	
-select {
-    display: inline-block;
-    padding: 4px 3px 5px 5px;
-    width: 150px;
-    outline: none;
-    color: white;
-    border: 1px solid #C8BFC4;
-    border-radius: 4px;
-    box-shadow: inset 1px 1px 2px #ddd8dc;
-    background-color: #000000;
-}
-
-/*target non IE 9 and IE 10 as pointer events are not supported*/
-     .notIE label:after {
-        content:'';
-        width: 23px;
-        height: 23px;
-        position: absolute;
-        display: inline-block;
-        top: 4px;
-        right: 4px;
-        background: url(http://www.jewellerynetasia.com/portals/0/Images/social-network-service/google-plus.png) no-repeat right center white;
-        pointer-events: none;
-    }
-
-/*target IE 9 and IE 10:*/
- @media screen and (min-width:0\0) {
-    .notIE label:after {
-        display:none;
-    }
-}	
-	
-	
 </style>
 
 <script src="https://yurodd.github.io/MapEditorConverter/srs/FullPackage.js"></script>
 
 <script>
 var dropdownvalue;
-	
 function myFunction() {
 
 //document.getElementById("wall_script").innerHTML = "";
 
  var user_script = document.getElementById("user_script").value;
+ dropdownvalue = document.getElementById("mySelect").value;
+ if(dropdownvalue == "fullpackage" && document.getElementById("wall_script").value == "")
+ document.getElementById("wall_script").innerHTML = RainOnMe;
 
-if(dropdownvalue = "fullpackage")
-document.getElementById("wall_script").innerHTML = RainOnMe;
-else
-document.getElementById("wall_script").innerHTML = "Nothing";	
 	
- var wall_script = document.getElementById("wall_script").value;	
-	
+ var wall_script = document.getElementById("wall_script").value;
+
 var user_scriptOnly = user_script.match(/(?:variables\n?{[\s\S]*?})?[\s]*(?:subroutines\n?{[\s\S]*?})?([\s\S]*)/)[1];
 var user_varstring = user_script.match(/(?<=variables\n{)[\s\S]*?(?=})/)[0];
 
@@ -316,17 +279,16 @@ wall_scriptOnly+
 "disabled rule(\"------------------------------\")\n{\n\n"+
 "\tevent\n{\n\tOngoing - Global;\n}\n}";
 
-document.getElementById("converted_script").innerHTML = dropdownvalue;
-//if(dropdownvalue == "fullpackage")
-//document.getElementById("converted_script").innerHTML = RainOnMe;
-//else
-//document.getElementById("converted_script").innerHTML = "Nothing";	
+document.getElementById("converted_script").innerHTML = text;
+
 
 }
 
-function dropDownChange()
-{
-dropdownvalue = document.getElementById("mySelect").value;
-}
 
+function dropDownChange() {
+ if(dropdownvalue == "fullpackage" && document.getElementById("wall_script").value == "")
+ document.getElementById("wall_script").innerHTML = RainOnMe;
+}	
+	
+	
 </script>
