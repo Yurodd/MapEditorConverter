@@ -279,14 +279,17 @@ wall_scriptOnly+
 "disabled rule(\"------------------------------\")\n{\n\n"+
 "\tevent\n{\n\tOngoing - Global;\n}\n}";
 
-document.getElementById("converted_script").innerHTML = RainOnMe;
+document.getElementById("converted_script").innerHTML = text;
 
 
 }
 
 
 function dropDownChange() {
+if(dropdownvalue == "fullpackage")
  document.getElementById("wall_script").innerHTML = RainOnMe;
+else
+ document.getElementById("wall_script").innerHTML = "";
 }	
 	
 	
