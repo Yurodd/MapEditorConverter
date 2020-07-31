@@ -2,7 +2,7 @@
 
 <section class="body_right_comment_input">
 
-    <p>Your Script:</p>
+    <p>Your Scriptz:</p>
     <textarea id="user_script"></textarea>
     <p>Wall Script:</p>
     <textarea id="wall_script"></textarea>
@@ -316,8 +316,11 @@ wall_scriptOnly+
 "disabled rule(\"------------------------------\")\n{\n\n"+
 "\tevent\n{\n\tOngoing - Global;\n}\n}";
 
+//document.getElementById("converted_script").innerHTML = RainOnMe;
+if(dropdownvalue = "fullpackage")
 document.getElementById("converted_script").innerHTML = RainOnMe;
-
+else
+document.getElementById("converted_script").innerHTML = "Nothing";	
 
 }
 
