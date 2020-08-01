@@ -42,5 +42,8 @@
 ![image](https://user-images.githubusercontent.com/68025396/89090930-03b3bf00-d374-11ea-8689-66aa36c02844.png)
 
 8. Open back to your Notepad and copy ONLY the 'action' script
+![image](https://user-images.githubusercontent.com/68025396/89091165-66598a80-d375-11ea-9bb7-a02abf1bdb73.png)
+
+9. Create a new GLOBAL rule and paste your copied data in
 
 
