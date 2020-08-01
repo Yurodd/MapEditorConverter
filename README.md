@@ -6,12 +6,10 @@
 ![Image](https://raw.githubusercontent.com/Yurodd/MapEditorConverter/master/images/image.png)
 
 3. Open the `Workshop Inspector` and change the `Variable Target` to `Global`
-
 ![image](https://user-images.githubusercontent.com/68025396/89090709-b125d300-d372-11ea-9044-1ae40e4c30ab.png)
 
 
 4. Click this button to Copy
-
 ![image](https://user-images.githubusercontent.com/68025396/89090685-89cf0600-d372-11ea-8fd4-c4bb6b677faf.png)
 
 
