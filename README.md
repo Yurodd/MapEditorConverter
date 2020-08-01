@@ -17,7 +17,9 @@
 
 # HOW2USE
 
-0. **BACKUP YOUR SCRIPT FIRST**
+```diff
+-  **BACKUP YOUR SCRIPT FIRST**
+```
 
 1. Use this code to start making your own custom maps: `4ZKM1`
 
