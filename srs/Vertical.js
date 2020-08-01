@@ -2,7 +2,7 @@
 
 "use strict";
 
-var RainOnMe = `variables
+var Vertical = `variables
 {
     global:
         0: _extendedGlobalCollection
