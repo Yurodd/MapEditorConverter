@@ -45,6 +45,7 @@
 ![image](https://user-images.githubusercontent.com/68025396/89091165-66598a80-d375-11ea-9bb7-a02abf1bdb73.png)
 
 9. Create a new GLOBAL rule and paste your copied data in
-![image](https://user-images.githubusercontent.com/68025396/89091208-c18b7d00-d375-11ea-8400-c15525898c83.png)
+![image](https://user-images.githubusercontent.com/68025396/89091234-f7c8fc80-d375-11ea-9120-50abd0d35d05.png)
+
 
 
