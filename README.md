@@ -35,10 +35,12 @@
 6. Import the walls to your script (Read Above, Use the provided link)
 
 7. Paste in the converted/wall script to your mode
+![image](https://user-images.githubusercontent.com/68025396/89091082-c69bfc80-d374-11ea-925f-5711ba178f25.png)
 
->If you get an error like this, 'Reset' your variable names
+
+>If you get an error like this, plz 'Reset' your variable names
 ![image](https://user-images.githubusercontent.com/68025396/89090930-03b3bf00-d374-11ea-8689-66aa36c02844.png)
 
-8. Paste in the data
+8. Open back to your Notepad and copy ONLY the 'action' script
 
 
