@@ -293,7 +293,7 @@ function dropDownChange() {
 dropdownvalue = document.getElementById("mySelect").value;
 if(dropdownvalue == "fullpackage")
  document.getElementById("wall_script").innerHTML = RainOnMe;
-if(dropdownvalue == "vertical")
+else if(dropdownvalue == "vertical")
  document.getElementById("wall_script").innerHTML = Vertical;
 else
  document.getElementById("wall_script").innerHTML = dropdownvalue;
