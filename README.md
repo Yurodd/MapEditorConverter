@@ -1,4 +1,5 @@
 # Importing walls to your own custom script
+0. **BACKUP YOUR SCRIPT FIRST**
 1. Paste in your own script in the first box
 2. Select the type of wall you used.
 > Full Package - Includes ALL types of walls - (~2534 Element Count without data)
@@ -12,6 +13,8 @@
 
 
 # HOW2USE
+
+0. **BACKUP YOUR SCRIPT FIRST**
 
 1. Use this code to start making your own custom maps: `4ZKM1`
 
@@ -31,7 +34,10 @@
 
 6. Import the walls to your script (Read Above, Use the provided link)
 
-7. Copy the converted/wall script to your mode
+7. Paste in the converted/wall script to your mode
+
+>If you get an error like this, 'Reset' your variable names
+![image](https://user-images.githubusercontent.com/68025396/89090930-03b3bf00-d374-11ea-8689-66aa36c02844.png)
 
 
 
