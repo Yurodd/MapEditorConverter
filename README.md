@@ -1,11 +1,16 @@
 # HOW2USE
 
--Use this code to start making your own custom maps: `4ZKM1`
+1. Use this code to start making your own custom maps: `4ZKM1`
 
--Once you have completed making your walls, Press the compile Button.
+2. Once you have completed making your walls, Press the compile Button.
 ![Image](https://raw.githubusercontent.com/Yurodd/MapEditorConverter/master/images/image.png)
 
--Open the `Workshop Inspector` and change the `Variable Target` to `Global`
+3. Open the `Workshop Inspector` and change the `Variable Target` to `Global`
+
+4. Click this button to Copy
+
+![image](https://user-images.githubusercontent.com/68025396/89090685-89cf0600-d372-11ea-8fd4-c4bb6b677faf.png)
+
 
 
 # Importing to your own custom script
