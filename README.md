@@ -2,6 +2,7 @@
 1. Paste in your own script in the first box
 2. Select the type of wall you used.
 > Full Package - Includes ALL types of walls - (~2534 Element Count without data)
+
 > Vertical - Only Vertical walls - (~1148 Element Count without data)
 3. Hit Convert
  https://yurodd.github.io/MapEditorConverter/
