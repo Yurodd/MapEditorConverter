@@ -1,7 +1,7 @@
 # Importing walls to your own custom script
 
 ```diff
-- 0. **BACKUP YOUR SCRIPT FIRST**
+-  **BACKUP YOUR SCRIPT FIRST**
 ```
 1. Paste in your own script in the first box
 2. Select the type of wall you used.
