@@ -39,5 +39,6 @@
 >If you get an error like this, 'Reset' your variable names
 ![image](https://user-images.githubusercontent.com/68025396/89090930-03b3bf00-d374-11ea-8689-66aa36c02844.png)
 
+8. Paste in the data
 
 
