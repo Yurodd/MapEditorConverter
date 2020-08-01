@@ -7,11 +7,13 @@
 
 3. Open the `Workshop Inspector` and change the `Variable Target` to `Global`
 
-  ![image](https://user-images.githubusercontent.com/68025396/89090709-b125d300-d372-11ea-9044-1ae40e4c30ab.png)
+      ![image](https://user-images.githubusercontent.com/68025396/89090709-b125d300-d372-11ea-9044-1ae40e4c30ab.png)
 
 
 4. Click this button to Copy
 ![image](https://user-images.githubusercontent.com/68025396/89090725-d1ee2880-d372-11ea-8ba6-7cb4cfb8110e.png)
+
+5. Open a notepad and paste in your Copied Data.
 
 
 
