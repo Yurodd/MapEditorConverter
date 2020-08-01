@@ -9,9 +9,9 @@
     
 <select id="mySelect" onchange="dropDownChange()">
   <option value="fullpackage">Full Package</option>
-  <option value="BMW">BMW</option>
-  <option value="Mercedes">Mercedes</option>
-  <option value="Volvo">Volvo</option>
+  <option value="vertical">Vertical Walls Only</option>
+  <option value="...">...</option>
+  <option value="...">...</option>
 </select>
 
      <p>Converted Script:</p>
@@ -49,6 +49,7 @@ button {
 </style>
 
 <script src="https://yurodd.github.io/MapEditorConverter/srs/FullPackage.js"></script>
+<script src="https://yurodd.github.io/MapEditorConverter/srs/Vertical.js"></script>
 
 <script>
 document.getElementById("wall_script").innerHTML = RainOnMe;
@@ -61,6 +62,8 @@ function myFunction() {
  dropdownvalue = document.getElementById("mySelect").value;
  if(dropdownvalue == "fullpackage")
  document.getElementById("wall_script").innerHTML = RainOnMe;
+else if(dropdownvalue == "vertical")
+ document.getElementById("wall_script").innerHTML = Vertical;
 
 	
  var wall_script = document.getElementById("wall_script").value;
@@ -290,6 +293,8 @@ function dropDownChange() {
 dropdownvalue = document.getElementById("mySelect").value;
 if(dropdownvalue == "fullpackage")
  document.getElementById("wall_script").innerHTML = RainOnMe;
+if(dropdownvalue == "vertical")
+ document.getElementById("wall_script").innerHTML = Vertical;
 else
  document.getElementById("wall_script").innerHTML = dropdownvalue;
 }	
