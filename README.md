@@ -20,7 +20,7 @@
 # https://yurodd.github.io/MapEditorConverter/
 
 
-# HOW2USE
+# START MAKING WALLS
 
 ```diff
 -  **BACKUP YOUR SCRIPT FIRST**
