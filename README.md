@@ -26,7 +26,7 @@
 -  **BACKUP YOUR SCRIPT FIRST**
 ```
 
-1. Use this code to start making your own custom maps: `EZ5E7`
+1. Use this code to start making your own custom maps: `CMND5`
 
 2. Once you have completed making your walls, Press the compile Button.
 ![Image](https://raw.githubusercontent.com/Yurodd/MapEditorConverter/master/images/image.png)
