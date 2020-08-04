@@ -8,7 +8,7 @@
 -  This Converter ONLY works if all your current variable is using a custom Name. 
 -  Will have a conflict if you are using any of the preset Alphebetical variable names from A - Q.
 ```
-1. Paste in your own script in the first box
+1. Copy all your rules and Paste in your own script in the first box
 2. Select the type of wall you used.
 > Full Package - Includes ALL types of walls - (~2534 Element Count without data)
 
@@ -26,7 +26,7 @@
 -  **BACKUP YOUR SCRIPT FIRST**
 ```
 
-1. Use this code to start making your own custom maps: `4ZKM1`
+1. Use this code to start making your own custom maps: `EZ5E7`
 
 2. Once you have completed making your walls, Press the compile Button.
 ![Image](https://raw.githubusercontent.com/Yurodd/MapEditorConverter/master/images/image.png)
