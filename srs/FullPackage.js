@@ -106,14 +106,14 @@ rule("Reset")
         Has Spawned(Event Player) == True;
     }
 
-    // Action count: 174
+    // Action count: 178
     actions
     {
         Set Player Variable At Index(Event Player, lastsavedpos, Global Variable(z), Player Variable(Event Player, fullbodypos));
         Wait(0.016, Ignore Condition);
         Set Player Variable(Event Player, closestwall, Filtered Array(Global Variable(AllPos), Or(Or(Compare(Distance Between(Add(Event Player, Multiply(Value In Array(Global Variable(AllDir), Current Array Index), Divide(Dot Product(Subtract(Current Array Element, Event Player), Value In Array(Global Variable(AllDir), Current Array Index)), Dot Product(Value In Array(Global Variable(AllDir), Current Array Index), Value In Array(Global Variable(AllDir), Current Array Index))))), Event Player), <, 2), Compare(Compare(Dot Product(Direction Towards(Current Array Element, Value In Array(Player Variable(Event Player, lastsavedpos), Current Array Index)), Value In Array(Global Variable(AllDir), Current Array Index)), >, 0), !=, Compare(Dot Product(Direction Towards(Current Array Element, Event Player), Value In Array(Global Variable(AllDir), Current Array Index)), >, 0))), Compare(Value In Array(Player Variable(Event Player, active_wall), Current Array Index), ==, 1))));
         For Global Variable(z, 0, Count Of(Global Variable(AllPos)), 1);
-        	If(Compare(Y Component Of(Value In Array(Global Variable(AllDir), Global Variable(z))), ==, 0));
+        	If(Or(Or(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 1), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 3)), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 5)));
         		If(And(Compare(Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), >=, Y Component Of(Position of(Event Player))), Compare(Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), <=, Y Component Of(Add(Eye Position(Event Player), Vector(Empty Array, 0.2, Empty Array))))));
         			Set Player Variable(Event Player, closestbodypos, Value In Array(Global Variable(firstpos), Global Variable(z)));
         		Else If(And(Compare(Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), >=, Y Component Of(Position of(Event Player))), Compare(Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), <=, Y Component Of(Add(Eye Position(Event Player), Vector(Empty Array, 0.2, Empty Array))))));
@@ -123,7 +123,7 @@ rule("Reset")
         		End;
         		Set Player Variable(Event Player, fullbodypos, Vector(X Component Of(Eye Position(Event Player)), Y Component Of(Player Variable(Event Player, closestbodypos)), Z Component Of(Eye Position(Event Player))));
         		Set Player Variable(Event Player, filterpos, Add(Player Variable(Event Player, fullbodypos), Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), Divide(Dot Product(Subtract(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), Dot Product(Value In Array(Global Variable(AllDir), Global Variable(z)), Value In Array(Global Variable(AllDir), Global Variable(z)))))));
-        		If(Or(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 0), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 2)));
+        		If(Or(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 1), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 3)));
         			If(Compare(Count Of(Global Variable(firstpos)), >, 0));
         				Set Player Variable(Event Player, intersection_length, Divide(Dot Product(Subtract(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), Dot Product(Direction Towards(Value In Array(Player Variable(Event Player, lastsavedpos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z)))));
         				Set Player Variable(Event Player, prevpos_intersection, Add(Player Variable(Event Player, fullbodypos), Multiply(Multiply(Direction Towards(Value In Array(Player Variable(Event Player, lastsavedpos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Vector(1, Empty Array, 1)), Player Variable(Event Player, intersection_length))));
@@ -148,7 +148,7 @@ rule("Reset")
         					Disable Movement Collision With Environment(Event Player, False);
         				End;
         			End;
-        			If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 0));
+        			If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 1));
         				If(Compare(Distance Between(Player Variable(Event Player, fullbodypos), Player Variable(Event Player, filterpos)), <=, 0.8));
         					Set Player Variable(Event Player, intersection_length_0, Divide(Dot Product(Subtract(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), Dot Product(Normalize(World Vector Of(Throttle Of(Event Player), Event Player, Rotation)), Value In Array(Global Variable(AllDir), Global Variable(z)))));
         					Set Player Variable(Event Player, prevpos_intersection, Add(Player Variable(Event Player, fullbodypos), Multiply(Multiply(Normalize(World Vector Of(Throttle Of(Event Player), Event Player, Rotation)), Vector(1, Empty Array, 1)), Player Variable(Event Player, intersection_length_0))));
@@ -156,13 +156,13 @@ rule("Reset")
         				End;
         				Apply Impulse(Event Player, Multiply(Direction Towards(Player Variable(Event Player, filterpos), Player Variable(Event Player, fullbodypos)), Vector(1, Empty Array, 1)), 0.001, To World, Cancel Contrary Motion);
         				Start Throttle In Direction(Event Player, Null, False, To World, Add To Existing Throttle, None);
-        			Else If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 2));
+        			Else If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 3));
         				Apply Impulse(Event Player, Direction Towards(Player Variable(Event Player, filterpos), Player Variable(Event Player, fullbodypos)), 10, To World, Cancel Contrary Motion);
         			End;
         		Else;
         			Set Player Variable At Index(Event Player, active_wall, Global Variable(z), 0);
         		End;
-        	Else If(Compare(Y Component Of(Value In Array(Global Variable(AllDir), Global Variable(z))), ==, 1));
+        	Else If(Or(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 2), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 6)));
         		If(And(Compare(Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), >=, Y Component Of(Position of(Event Player))), Compare(Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), <=, Y Component Of(Add(Eye Position(Event Player), Vector(Empty Array, 0.2, Empty Array))))));
         			Set Player Variable(Event Player, closestbodypos, Value In Array(Global Variable(firstpos), Global Variable(z)));
         		Else If(Compare(Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), <=, Y Component Of(Position of(Event Player))));
@@ -172,7 +172,7 @@ rule("Reset")
         		End;
         		Set Player Variable(Event Player, fullbodypos, Vector(X Component Of(Eye Position(Event Player)), Y Component Of(Player Variable(Event Player, closestbodypos)), Z Component Of(Eye Position(Event Player))));
         		Set Player Variable(Event Player, filterpos, Add(Player Variable(Event Player, fullbodypos), Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), Divide(Dot Product(Subtract(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), Dot Product(Value In Array(Global Variable(AllDir), Global Variable(z)), Value In Array(Global Variable(AllDir), Global Variable(z)))))));
-        		If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 1));
+        		If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 2));
         			If(Not(Is On Ground(Event Player)));
         				If(Compare(Compare(Dot Product(Direction Towards(Value In Array(Global Variable(AllPos), Global Variable(z)), Value In Array(Player Variable(Event Player, lastsavedpos), Global Variable(z))), Value In Array(Global Variable(AllDir), Global Variable(z))), >, 0), !=, Compare(Dot Product(Direction Towards(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), >, 0)));
         					Set Player Variable(Event Player, intersection_length_1, Divide(Dot Product(Subtract(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), Dot Product(Direction Towards(Value In Array(Player Variable(Event Player, lastsavedpos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z)))));
@@ -193,7 +193,7 @@ rule("Reset")
         			Set Player Variable(Event Player, thickness_0, 0.5);
         		End;
         		If(And(And(And(And(Compare(Distance Between(Player Variable(Event Player, filterpos), Player Variable(Event Player, fullbodypos)), <=, Player Variable(Event Player, thickness_0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(firstpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Value In Array(Global Variable(firstpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)));
-        			If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 1));
+        			If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 2));
         				If(Compare(Dot Product(Down, Direction Towards(Player Variable(Event Player, fullbodypos), Player Variable(Event Player, filterpos))), >, 0));
         					If(Compare(Count Of(Filtered Array(Player Variable(Event Player, active_wall), Compare(Current Array Element, ==, 1))), ==, 0));
         						Set Gravity(Event Player, 0);
@@ -235,7 +235,7 @@ rule("Reset")
         		Else;
         			Set Player Variable At Index(Event Player, active_wall, Global Variable(z), 0);
         		End;
-        	Else;
+        	Else If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 4));
         		Set Player Variable(Event Player, closestbodypos, Add(Position of(Event Player), Vector(Empty Array, 0.5, Empty Array)));
         		Set Player Variable(Event Player, fullbodypos, Vector(X Component Of(Eye Position(Event Player)), Y Component Of(Player Variable(Event Player, closestbodypos)), Z Component Of(Eye Position(Event Player))));
         		Set Player Variable(Event Player, filterpos, Add(Player Variable(Event Player, fullbodypos), Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), Divide(Dot Product(Subtract(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), Dot Product(Value In Array(Global Variable(AllDir), Global Variable(z)), Value In Array(Global Variable(AllDir), Global Variable(z)))))));
@@ -259,15 +259,19 @@ rule("Reset")
         				Apply Impulse(Event Player, Up, 0.001, To World, Cancel Contrary Motion);
         				If(Compare(Dot Product(Velocity Of(Event Player), Player Variable(Event Player, downwardslope)), >=, 0));
         					Apply Impulse(Event Player, Vector(X Component Of(Velocity Of(Event Player)), Y Component Of(Player Variable(Event Player, velocitySlope)), Z Component Of(Velocity Of(Event Player))), Speed Of(Event Player), To World, Cancel Contrary Motion);
-        					Start Accelerating(Event Player, Player Variable(Event Player, downwardslope), Multiply(17.5, Sine From Degrees(Angle Between Vectors(Down, Multiply(First Of(Global Variable(AllDir)), -1)))), 1000, To World, None);
+        					Start Accelerating(Event Player, Player Variable(Event Player, downwardslope), Multiply(17.5, Sine From Degrees(Angle Between Vectors(Down, Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), -1)))), 1000, To World, None);
         				Else If(And(Compare(Dot Product(Velocity Of(Event Player), Player Variable(Event Player, downwardslope)), <, 0), Compare(Throttle Of(Event Player), !=, Vector(Empty Array, Empty Array, Empty Array))));
         					Apply Impulse(Event Player, Vector(X Component Of(Velocity Of(Event Player)), Y Component Of(Player Variable(Event Player, velocitySlope)), Z Component Of(Velocity Of(Event Player))), Speed Of(Event Player), To World, Cancel Contrary Motion);
-        					Start Accelerating(Event Player, Player Variable(Event Player, downwardslope), Multiply(17.5, Sine From Degrees(Angle Between Vectors(Down, Multiply(First Of(Global Variable(AllDir)), -1)))), 1000, To World, None);
+        					Start Accelerating(Event Player, Player Variable(Event Player, downwardslope), Multiply(17.5, Sine From Degrees(Angle Between Vectors(Down, Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), -1)))), 1000, To World, None);
         				Else If(And(Compare(Dot Product(Velocity Of(Event Player), Player Variable(Event Player, downwardslope)), <, 0), Compare(Throttle Of(Event Player), ==, Vector(Empty Array, Empty Array, Empty Array))));
         					Apply Impulse(Event Player, Vector(X Component Of(Velocity Of(Event Player)), Y Component Of(Player Variable(Event Player, velocitySlope)), Z Component Of(Velocity Of(Event Player))), Horizontal Speed Of(Event Player), To World, Cancel Contrary Motion);
-        					Start Accelerating(Event Player, Player Variable(Event Player, downwardslope), Multiply(17.5, Sine From Degrees(Angle Between Vectors(Down, Multiply(First Of(Global Variable(AllDir)), -1)))), 1000, To World, None);
+        					Start Accelerating(Event Player, Player Variable(Event Player, downwardslope), Multiply(17.5, Sine From Degrees(Angle Between Vectors(Down, Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), -1)))), 1000, To World, None);
         				End;
-        				Apply Impulse(Event Player, Player Variable(Event Player, downwardslope), Multiply(Speed Of(Event Player), 0.016), To World, Incorporate Contrary Motion);
+        				If(Compare(Sine From Degrees(Angle Between Vectors(Down, Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), -1))), >, 10));
+        					Apply Impulse(Event Player, Player Variable(Event Player, downwardslope), Multiply(Multiply(Speed Of(Event Player), Sine From Degrees(Angle Between Vectors(Down, Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), -1)))), 0.016), To World, Incorporate Contrary Motion);
+        				Else;
+        					Apply Impulse(Event Player, Player Variable(Event Player, downwardslope), Multiply(Speed Of(Event Player), 0.016), To World, Incorporate Contrary Motion);
+        				End;
         			Else;
         				Apply Impulse(Event Player, Direction Towards(Player Variable(Event Player, filterpos), Player Variable(Event Player, fullbodypos)), 0.001, To World, Cancel Contrary Motion);
         			End;
@@ -343,59 +347,53 @@ rule("Effect Creation")
         Ongoing - Global;
     }
 
-    // Action count: 59
+    // Action count: 53
     actions
     {
         Wait(5, Ignore Condition);
         If(Global Variable(showwalls));
         	For Global Variable(x, 0, Count Of(Global Variable(AllPos)), 1);
-        		If(Compare(Y Component Of(Value In Array(Global Variable(AllDir), Global Variable(x))), ==, 0));
+        		If(Or(Or(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 1), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 3)), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 5)));
         			If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 5));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Red, None);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Red, None);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Add(Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(0.001, Empty Array, Empty Array)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Red, None);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Red, None);
         			Else;
-        Skip(Value In Array(Array(17, 0, 6, 12), Add(Index Of Array Value(Array(1, 2, 3), Value In Array(Global Variable(g_beamType), Global Variable(x))), 1)));
-        				Create Effect(All Players(Team(All)), Sphere, Yellow, Divide(Add(Value In Array(Global Variable(firstpos), Global Variable(x)), Value In Array(Global Variable(secondpos), Global Variable(x))), 2), 0.1, None);
+        Skip(Value In Array(Array(14, 0, 5, 10), Add(Index Of Array Value(Array(1, 2, 3), Value In Array(Global Variable(g_beamType), Global Variable(x))), 1)));
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Add(Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(0.001, Empty Array, Empty Array)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Aqua, None);
-        Skip(11);
-        				Create Effect(All Players(Team(All)), Sphere, Yellow, Divide(Add(Value In Array(Global Variable(firstpos), Global Variable(x)), Value In Array(Global Variable(secondpos), Global Variable(x))), 2), 0.1, None);
+        Skip(9);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Add(Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(0.001, Empty Array, Empty Array)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Aqua, None);
-        Skip(5);
-        				Create Effect(All Players(Team(All)), Sphere, Yellow, Divide(Add(Value In Array(Global Variable(firstpos), Global Variable(x)), Value In Array(Global Variable(secondpos), Global Variable(x))), 2), 0.1, None);
+        Skip(4);
         				Create Beam Effect(All Players(Team(All)), Bad Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Bad Beam, Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Bad Beam, Add(Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(0.001, Empty Array, Empty Array)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Bad Beam, Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Aqua, None);
         			End;
-        		Else;
+        		Else If(Or(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 2), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 6)));
         			If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 6));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Red, None);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Value In Array(Global Variable(secondpos), Global Variable(x)), Red, None);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Value In Array(Global Variable(secondpos), Global Variable(x)), Add(Value In Array(Global Variable(secondpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Red, None);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Add(Value In Array(Global Variable(secondpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Value In Array(Global Variable(firstpos), Global Variable(x)), Red, None);
         			Else;
-        Skip(Value In Array(Array(17, 0, 6, 12), Add(Index Of Array Value(Array(1, 2, 3), Value In Array(Global Variable(g_beamType), Global Variable(x))), 1)));
-        				Create Effect(All Players(Team(All)), Sphere, Yellow, Divide(Add(Value In Array(Global Variable(firstpos), Global Variable(x)), Value In Array(Global Variable(secondpos), Global Variable(x))), 2), 0.1, None);
+        Skip(Value In Array(Array(14, 0, 5, 10), Add(Index Of Array Value(Array(1, 2, 3), Value In Array(Global Variable(g_beamType), Global Variable(x))), 1)));
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Value In Array(Global Variable(secondpos), Global Variable(x)), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Value In Array(Global Variable(secondpos), Global Variable(x)), Add(Value In Array(Global Variable(secondpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Add(Value In Array(Global Variable(secondpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Value In Array(Global Variable(firstpos), Global Variable(x)), Aqua, None);
-        Skip(11);
-        				Create Effect(All Players(Team(All)), Sphere, Yellow, Divide(Add(Value In Array(Global Variable(firstpos), Global Variable(x)), Value In Array(Global Variable(secondpos), Global Variable(x))), 2), 0.1, None);
+        Skip(9);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Value In Array(Global Variable(secondpos), Global Variable(x)), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Value In Array(Global Variable(secondpos), Global Variable(x)), Add(Value In Array(Global Variable(secondpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Add(Value In Array(Global Variable(secondpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Value In Array(Global Variable(firstpos), Global Variable(x)), Aqua, None);
-        Skip(5);
-        				Create Effect(All Players(Team(All)), Sphere, Yellow, Divide(Add(Value In Array(Global Variable(firstpos), Global Variable(x)), Value In Array(Global Variable(secondpos), Global Variable(x))), 2), 0.1, None);
+        Skip(4);
         				Create Beam Effect(All Players(Team(All)), Bad Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Bad Beam, Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Value In Array(Global Variable(secondpos), Global Variable(x)), Aqua, None);
         				Create Beam Effect(All Players(Team(All)), Bad Beam, Value In Array(Global Variable(secondpos), Global Variable(x)), Add(Value In Array(Global Variable(secondpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Aqua, None);
