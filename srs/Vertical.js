@@ -17,7 +17,7 @@ var Vertical = `variables
         9: z
         10: Wall_ID
         11: showwalls
-        12: destoryall
+        12: destroyall
         13: _arrayBuilder_0
         14: g_beamType
         15: x
