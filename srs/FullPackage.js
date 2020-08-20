@@ -94,7 +94,7 @@ rule("Initial Player")
     }
 }
 
-rule("Reset")
+rule("Collision Logic")
 {
 
     event
