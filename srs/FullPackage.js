@@ -114,7 +114,7 @@ rule("Reset")
     {
         Set Player Variable At Index(Event Player, lastsavedpos, Global Variable(z), Player Variable(Event Player, fullbodypos));
         Wait(0.016, Ignore Condition);
-        Set Player Variable(Event Player, closestwall, Filtered Array(Global Variable(AllPos), Or(Or(Compare(Distance Between(Add(Event Player, Multiply(Value In Array(Global Variable(AllDir), Current Array Index), Divide(Dot Product(Subtract(Current Array Element, Event Player), Value In Array(Global Variable(AllDir), Current Array Index)), Dot Product(Value In Array(Global Variable(AllDir), Current Array Index), Value In Array(Global Variable(AllDir), Current Array Index))))), Event Player), <, 2), Compare(Compare(Dot Product(Direction Towards(Current Array Element, Value In Array(Player Variable(Event Player, lastsavedpos), Current Array Index)), Value In Array(Global Variable(AllDir), Current Array Index)), >, 0), !=, Compare(Dot Product(Direction Towards(Current Array Element, Event Player), Value In Array(Global Variable(AllDir), Current Array Index)), >, 0))), Compare(Value In Array(Player Variable(Event Player, active_wall), Current Array Index), ==, 1))));
+        Set Player Variable(Event Player, closestwall, Filtered Array(Global Variable(AllPos), Or(Or(Or(Compare(Distance Between(Add(Event Player, Multiply(Value In Array(Global Variable(AllDir), Current Array Index), Divide(Dot Product(Subtract(Current Array Element, Event Player), Value In Array(Global Variable(AllDir), Current Array Index)), Dot Product(Value In Array(Global Variable(AllDir), Current Array Index), Value In Array(Global Variable(AllDir), Current Array Index))))), Event Player), <, 2), Compare(Compare(Dot Product(Direction Towards(Current Array Element, Value In Array(Player Variable(Event Player, lastsavedpos), Current Array Index)), Value In Array(Global Variable(AllDir), Current Array Index)), >, 0), !=, Compare(Dot Product(Direction Towards(Current Array Element, Event Player), Value In Array(Global Variable(AllDir), Current Array Index)), >, 0))), Compare(Value In Array(Player Variable(Event Player, active_wall), Current Array Index), ==, 1)), Compare(Value In Array(Global Variable(Wall_ID), Current Array Index), ==, 6))));
         For Player Variable(Event Player, x, 0, Count Of(Player Variable(Event Player, closestwall)), 1);
         	Set Global Variable(z, Index Of Array Value(Global Variable(AllPos), Value In Array(Player Variable(Event Player, closestwall), Player Variable(Event Player, x))));
         	If(Or(Or(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 1), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 3)), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 5)));
@@ -200,7 +200,7 @@ rule("Reset")
         		End;
         		Set Player Variable(Event Player, thickness_0, 0);
         		If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 6));
-        			Set Player Variable(Event Player, thickness_0, 2);
+        			Set Player Variable(Event Player, thickness_0, 6);
         		Else;
         			Set Player Variable(Event Player, thickness_0, 0.5);
         		End;
@@ -241,8 +241,8 @@ rule("Reset")
         			Else If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 6));
         				If(Compare(Count Of(Filtered Array(Player Variable(Event Player, active_wall), Compare(Current Array Element, ==, 1))), ==, 0));
         					Set Player Variable At Index(Event Player, active_wall, Global Variable(z), 1);
+        					Disable Movement Collision With Environment(Event Player, True);
         				End;
-        				Disable Movement Collision With Environment(Event Player, True);
         			Else If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 7));
         				If(Compare(Dot Product(Down, Direction Towards(Player Variable(Event Player, fullbodypos), Player Variable(Event Player, filterpos))), >=, 0));
         					If(Is Button Held(Event Player, Jump));
