@@ -20,7 +20,8 @@ var RainOnMe = `variables
         13: _arrayBuilder_0
         14: beam_ID
         15: g_beamType
-        16: x
+        16: initialized
+        17: x
     player:
         0: _extendedPlayerCollection
         1: filterpos
@@ -55,7 +56,7 @@ rule("Initial Global")
         Ongoing - Global;
     }
 
-    // Action count: 11
+    // Action count: 12
     actions
     {
         Set Global Variable(AllPos, Empty Array);
@@ -69,6 +70,7 @@ rule("Initial Global")
         Set Global Variable(Wall_ID, Empty Array);
         Set Global Variable(beam_ID, Empty Array);
         Set Global Variable(g_beamType, Empty Array);
+        Set Global Variable(initialized, False);
     }
 }
 
@@ -88,8 +90,8 @@ rule("Initial Player")
         Set Player Variable(Event Player, filterpos, 0);
         Set Player Variable(Event Player, lastsavedpos, 0);
         Set Player Variable(Event Player, closestbodypos, 0);
-        Set Player Variable(Event Player, fullbodypos, 0);
-        Set Player Variable(Event Player, prevpos_intersection, 0);
+        Set Player Variable(Event Player, fullbodypos, Position of(Event Player));
+        Set Player Variable(Event Player, prevpos_intersection, Position of(Event Player));
         Set Player Variable(Event Player, active_wall, Empty Array);
     }
 }
@@ -106,10 +108,10 @@ rule("Collision Logic")
 
     conditions
     {
-        Has Spawned(Event Player) == True;
+        Global Variable(initialized) == True;
     }
 
-    // Action count: 206
+    // Action count: 209
     actions
     {
         Set Player Variable At Index(Event Player, lastsavedpos, Global Variable(z), Player Variable(Event Player, fullbodypos));
@@ -135,6 +137,7 @@ rule("Collision Logic")
         					If(And(And(And(Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0)));
         						Cancel Primary Action(Event Player);
         						Teleport(Event Player, Add(Player Variable(Event Player, prevpos_intersection), Multiply(Direction Towards(Player Variable(Event Player, prevpos_intersection), Value In Array(Player Variable(Event Player, lastsavedpos), Global Variable(z))), 1.001)));
+        						Small Message(Event Player, Custom String("1,3", Null, Null, Null));
         					End;
         				End;
         			End;
@@ -193,6 +196,7 @@ rule("Collision Logic")
         							Else;
         								Teleport(Event Player, Add(Player Variable(Event Player, prevpos_intersection), Multiply(Direction Towards(Player Variable(Event Player, prevpos_intersection), Value In Array(Player Variable(Event Player, lastsavedpos), Global Variable(z))), Up)));
         							End;
+        							Small Message(Event Player, Custom String("2,7", Null, Null, Null));
         						End;
         					End;
         				End;
@@ -266,9 +270,10 @@ rule("Collision Logic")
         		Set Player Variable(Event Player, filterpos, Add(Player Variable(Event Player, fullbodypos), Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), Divide(Dot Product(Subtract(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), Dot Product(Value In Array(Global Variable(AllDir), Global Variable(z)), Value In Array(Global Variable(AllDir), Global Variable(z)))))));
         		If(Compare(Compare(Dot Product(Direction Towards(Value In Array(Global Variable(AllPos), Global Variable(z)), Value In Array(Player Variable(Event Player, lastsavedpos), Global Variable(z))), Value In Array(Global Variable(AllDir), Global Variable(z))), >, 0), !=, Compare(Dot Product(Direction Towards(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), >, 0)));
         			Set Player Variable(Event Player, intersection_length_2, Divide(Dot Product(Subtract(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), Dot Product(Direction Towards(Value In Array(Player Variable(Event Player, lastsavedpos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z)))));
-        			Set Player Variable(Event Player, prevpos_intersection, Add(Player Variable(Event Player, fullbodypos), Multiply(Direction Towards(Value In Array(Player Variable(Event Player, lastsavedpos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Player Variable(Event Player, intersection_length_2))));
+        			Set Player Variable(Event Player, prevpos_intersection, Ray Cast Hit Position(Player Variable(Event Player, fullbodypos), Add(Player Variable(Event Player, fullbodypos), Multiply(Direction Towards(Value In Array(Player Variable(Event Player, lastsavedpos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Player Variable(Event Player, intersection_length_2))), Null, Event Player, True));
         			If(And(And(And(Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(firstpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Value In Array(Global Variable(firstpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0)));
         				Teleport(Event Player, Ray Cast Hit Position(Player Variable(Event Player, prevpos_intersection), Add(Player Variable(Event Player, prevpos_intersection), Multiply(Direction Towards(Player Variable(Event Player, prevpos_intersection), Value In Array(Player Variable(Event Player, lastsavedpos), Global Variable(z))), Vector(1, Empty Array, 1))), Null, Event Player, True));
+        				Small Message(Event Player, Player Variable(Event Player, prevpos_intersection));
         				If(And(Compare(Hero Of(Event Player), ==, Hero(Doomfist)), Is Using Ability 2(Event Player)));
         					Teleport(Event Player, Nearest Walkable Position(Player Variable(Event Player, prevpos_intersection)));
         					Wait(0.016, Ignore Condition);
@@ -396,7 +401,7 @@ rule("Effect Creation")
         Ongoing - Global;
     }
 
-    // Action count: 149
+    // Action count: 150
     actions
     {
         Wait(5, Ignore Condition);
@@ -548,5 +553,6 @@ rule("Effect Creation")
         		Wait(0.016, Ignore Condition);
         	End;
         End;
+        Set Global Variable(initialized, True);
     }
 }`
