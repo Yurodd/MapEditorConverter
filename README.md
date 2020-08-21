@@ -42,9 +42,14 @@
 5. Open a notepad and paste in your Copied Data.
 ![image](https://user-images.githubusercontent.com/68025396/89090802-3b6e3700-d373-11ea-8093-4ef915fc2817.png)
 
-6. Import the walls to your script (Read Above, Use the provided link)
+6. Import the walls to your script
+>  If you HAVE your own script, paste in your script into the first box then hit Convert
 
-7. Paste in the converted/wall script to your mode
+>  If you DONT have your own script, just copy the middle box. Dont need to hit Convert
+![image](https://user-images.githubusercontent.com/68025396/90845122-72f94f00-e333-11ea-84f8-3dcf700c276a.png)
+
+
+7. Paste in the converted/wall script to your mode (make sure your variable names is clean and resetted)
 ![image](https://user-images.githubusercontent.com/68025396/89091082-c69bfc80-d374-11ea-925f-5711ba178f25.png)
 
 
