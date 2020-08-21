@@ -63,7 +63,7 @@
 ![image](https://user-images.githubusercontent.com/68025396/89091234-f7c8fc80-d375-11ea-9120-50abd0d35d05.png)
 
 
-# Now you're ALL set and ready to go!
-
+# It should look something like this and Now you're ALL set and ready to go!
+![image](https://user-images.githubusercontent.com/68025396/90845612-61647700-e334-11ea-8414-be244417f198.png)
 
 
