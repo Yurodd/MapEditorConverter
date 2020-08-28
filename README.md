@@ -15,6 +15,8 @@
 > Vertical - Only Vertical walls - (~1148 Element Count without data)
 3. Hit Convert
 
+4. Go to Step 7 Below
+
 > If you DONT have your own custom script to import to, then just copy the text after you've selected the Wall type
 
 # https://yurodd.github.io/MapEditorConverter/
