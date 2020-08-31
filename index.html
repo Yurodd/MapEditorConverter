@@ -243,17 +243,24 @@ newusersub = 0;
 //}
 
 //////////////////////////////////////////////////////////////////////////
+
 var text="variables\n{\n\tglobal:\n";
-for(var i = 0; i<newuserglobal.length; i++)
+if(newuserglobal.length > 0)
 {
-text = text + "\t\t";
-	text =  text + newuserglobal[i] + "\n";
+	for(var i = 0; i<newuserglobal.length; i++)
+	{
+	text = text + "\t\t";
+		text =  text + newuserglobal[i] + "\n";
+	}
 }
 text = text + "\n\tplayer:\n"
-for(var i = 0; i<newuserplayer.length; i++)
+if(newuserplayer.length > 0)
 {
-	text = text + "\t\t";
-	text =  text + newuserplayer[i] + "\n";
+	for(var i = 0; i<newuserplayer.length; i++)
+	{
+		text = text + "\t\t";
+		text =  text + newuserplayer[i] + "\n";
+	}
 }
 text = text + "}\n\n"
 
