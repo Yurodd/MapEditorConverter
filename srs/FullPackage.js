@@ -31,15 +31,20 @@ var RainOnMe = `variables
         5: prevpos_intersection
         6: active_wall
         7: closestwall
-        8: x
-        9: intersection_length
-        10: thickness
-        11: intersection_length_0
-        12: intersection_length_1
-        13: thickness_0
-        14: intersection_length_2
-        15: downwardslope
-        16: velocitySlope
+        8: is_Grounded
+        9: x
+        10: intersection_length
+        11: thickness
+        12: intersection_length_0
+        13: intersection_length_1
+        14: thickness_0
+        15: intersection_length_2
+        16: downwardslope
+        17: velocitySlope
+        18: intersection_length_3
+        19: downwardslope_0
+        20: velocitySlope_0
+        21: side_velocitySlope
 }
 
 // Extended collection variables:
@@ -110,12 +115,12 @@ rule("Collision Logic")
         Global Variable(initialized) == True;
     }
 
-    // Action count: 197
+    // Action count: 251
     actions
     {
         Set Player Variable(Event Player, lastsavedpos, Divide(Add(Eye Position(Event Player), Position Of(Event Player)), 2));
         Wait(0.016, Ignore Condition);
-        Set Player Variable(Event Player, closestwall, Filtered Array(Global Variable(AllPos), Or(Or(Or(Or(Compare(Distance Between(Add(Event Player, Multiply(Value In Array(Global Variable(AllDir), Current Array Index), Divide(Dot Product(Subtract(Current Array Element, Event Player), Value In Array(Global Variable(AllDir), Current Array Index)), Dot Product(Value In Array(Global Variable(AllDir), Current Array Index), Value In Array(Global Variable(AllDir), Current Array Index))))), Event Player), <, 2), Compare(Compare(Dot Product(Direction Towards(Current Array Element, Player Variable(Event Player, lastsavedpos)), Value In Array(Global Variable(AllDir), Current Array Index)), >, 0), !=, Compare(Dot Product(Direction Towards(Current Array Element, Event Player), Value In Array(Global Variable(AllDir), Current Array Index)), >, 0))), Compare(Value In Array(Player Variable(Event Player, active_wall), Current Array Index), ==, 1)), Compare(Value In Array(Global Variable(Wall_ID), Current Array Index), ==, 6)), Add(Eye Position(Event Player), Multiply(Facing Direction Of(Event Player), Divide(Dot Product(Subtract(Current Array Element, Eye Position(Event Player)), Value In Array(Global Variable(AllDir), Current Array Index)), Dot Product(Facing Direction Of(Event Player), Value In Array(Global Variable(AllDir), Current Array Index))))))));
+        Set Player Variable(Event Player, closestwall, Filtered Array(Global Variable(AllPos), Or(Or(Or(Compare(Value In Array(Player Variable(Event Player, active_wall), Current Array Index), ==, 1), Compare(Distance Between(Add(Event Player, Multiply(Value In Array(Global Variable(AllDir), Current Array Index), Divide(Dot Product(Subtract(Current Array Element, Event Player), Value In Array(Global Variable(AllDir), Current Array Index)), Dot Product(Value In Array(Global Variable(AllDir), Current Array Index), Value In Array(Global Variable(AllDir), Current Array Index))))), Event Player), <, 2)), Compare(Compare(Dot Product(Direction Towards(Current Array Element, Player Variable(Event Player, lastsavedpos)), Value In Array(Global Variable(AllDir), Current Array Index)), >, 0), !=, Compare(Dot Product(Direction Towards(Current Array Element, Event Player), Value In Array(Global Variable(AllDir), Current Array Index)), >, 0))), Compare(Value In Array(Global Variable(Wall_ID), Current Array Index), ==, 6))));
         For Player Variable(Event Player, x, 0, Count Of(Player Variable(Event Player, closestwall)), 1);
         	Set Global Variable(z, Index Of Array Value(Global Variable(AllPos), Value In Array(Player Variable(Event Player, closestwall), Player Variable(Event Player, x))));
         	If(Or(Or(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 1), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 3)), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 5)));
@@ -129,14 +134,12 @@ rule("Collision Logic")
         		Set Player Variable(Event Player, fullbodypos, Vector(X Component Of(Eye Position(Event Player)), Y Component Of(Player Variable(Event Player, closestbodypos)), Z Component Of(Eye Position(Event Player))));
         		Set Player Variable(Event Player, filterpos, Add(Player Variable(Event Player, fullbodypos), Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), Divide(Dot Product(Subtract(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), Dot Product(Value In Array(Global Variable(AllDir), Global Variable(z)), Value In Array(Global Variable(AllDir), Global Variable(z)))))));
         		If(Or(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 1), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 3)));
-        			If(Compare(Count Of(Global Variable(firstpos)), >, 0));
+        			If(Compare(Compare(Dot Product(Direction Towards(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, lastsavedpos)), Value In Array(Global Variable(AllDir), Global Variable(z))), >, 0), !=, Compare(Dot Product(Direction Towards(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), >, 0)));
         				Set Player Variable(Event Player, intersection_length, Divide(Dot Product(Subtract(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), Dot Product(Direction Towards(Player Variable(Event Player, lastsavedpos), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z)))));
         				Set Player Variable(Event Player, prevpos_intersection, Add(Player Variable(Event Player, fullbodypos), Multiply(Multiply(Direction Towards(Player Variable(Event Player, lastsavedpos), Player Variable(Event Player, fullbodypos)), Vector(1, Empty Array, 1)), Player Variable(Event Player, intersection_length))));
-        				If(Compare(Compare(Dot Product(Direction Towards(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, lastsavedpos)), Value In Array(Global Variable(AllDir), Global Variable(z))), >, 0), !=, Compare(Dot Product(Direction Towards(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), >, 0)));
-        					If(And(And(And(Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0)));
-        						Cancel Primary Action(Event Player);
-        						Teleport(Event Player, Add(Player Variable(Event Player, prevpos_intersection), Multiply(Direction Towards(Player Variable(Event Player, prevpos_intersection), Player Variable(Event Player, lastsavedpos)), 1.001)));
-        					End;
+        				If(And(And(And(Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0)));
+        					Cancel Primary Action(Event Player);
+        					Teleport(Event Player, Add(Player Variable(Event Player, prevpos_intersection), Multiply(Direction Towards(Player Variable(Event Player, prevpos_intersection), Player Variable(Event Player, lastsavedpos)), 1.001)));
         				End;
         			End;
         		End;
@@ -147,7 +150,7 @@ rule("Collision Logic")
         			Set Player Variable(Event Player, thickness, 1);
         		End;
         		If(And(And(And(And(Compare(Distance Between(Player Variable(Event Player, fullbodypos), Player Variable(Event Player, filterpos)), <=, Player Variable(Event Player, thickness)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)));
-        			If(Compare(Count Of(Filtered Array(Player Variable(Event Player, active_wall), Compare(Current Array Element, ==, 1))), ==, 0));
+        			If(Compare(Value In Array(Player Variable(Event Player, active_wall), Global Variable(z)), ==, False));
         				Set Player Variable At Index(Event Player, active_wall, Global Variable(z), 1);
         				If(Or(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 1), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 3)));
         					Set Gravity(Event Player, 100);
@@ -207,6 +210,7 @@ rule("Collision Logic")
         			If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 2));
         				If(Compare(Dot Product(Down, Direction Towards(Player Variable(Event Player, fullbodypos), Player Variable(Event Player, filterpos))), >, 0));
         					If(Compare(Value In Array(Player Variable(Event Player, active_wall), Global Variable(z)), ==, False));
+        						Set Player Variable(Event Player, is_Grounded, True);
         						Set Gravity(Event Player, 0);
         						Set Player Variable At Index(Event Player, active_wall, Global Variable(z), 1);
         						Apply Impulse(Event Player, Up, 0.001, To World, Cancel Contrary Motion);
@@ -256,6 +260,7 @@ rule("Collision Logic")
         			End;
         		Else;
         			Set Player Variable At Index(Event Player, active_wall, Global Variable(z), 0);
+        			Set Player Variable(Event Player, is_Grounded, False);
         		End;
         	Else If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 4));
         		Set Player Variable(Event Player, closestbodypos, Add(Position Of(Event Player), Vector(Empty Array, 0.5, Empty Array)));
@@ -284,7 +289,7 @@ rule("Collision Logic")
         			If(Compare(Dot Product(Up, Direction Towards(Player Variable(Event Player, filterpos), Player Variable(Event Player, closestbodypos))), >, 0));
         				Set Player Variable(Event Player, downwardslope, Multiply(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))), Dot Product(Down, Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))))));
         				Set Player Variable(Event Player, velocitySlope, Multiply(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))), Dot Product(Velocity Of(Event Player), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))))));
-        				If(Compare(Count Of(Filtered Array(Player Variable(Event Player, active_wall), Compare(Current Array Element, ==, 1))), ==, 0));
+        				If(Compare(Value In Array(Player Variable(Event Player, active_wall), Global Variable(z)), ==, False));
         					Set Gravity(Event Player, 0);
         					Set Player Variable At Index(Event Player, active_wall, Global Variable(z), 1);
         				End;
@@ -292,14 +297,68 @@ rule("Collision Logic")
         				If(Compare(Dot Product(Velocity Of(Event Player), Player Variable(Event Player, downwardslope)), >=, 0));
         					Apply Impulse(Event Player, Vector(X Component Of(Velocity Of(Event Player)), Y Component Of(Player Variable(Event Player, velocitySlope)), Z Component Of(Velocity Of(Event Player))), Speed Of(Event Player), To World, Cancel Contrary Motion);
         					Start Accelerating(Event Player, Player Variable(Event Player, downwardslope), Multiply(17.5, Sine From Degrees(Angle Between Vectors(Down, Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), -1)))), 1000, To World, None);
-        				Else If(Compare(Dot Product(Velocity Of(Event Player), Player Variable(Event Player, downwardslope)), <, 0));
-        					Apply Impulse(Event Player, Vector(X Component Of(Velocity Of(Event Player)), Empty Array, Z Component Of(Velocity Of(Event Player))), Speed Of(Event Player), To World, Cancel Contrary Motion);
+        				Else If(And(Compare(Dot Product(Velocity Of(Event Player), Player Variable(Event Player, downwardslope)), <, 0), Compare(Throttle Of(Event Player), !=, Vector(Empty Array, Empty Array, Empty Array))));
+        					Apply Impulse(Event Player, Vector(X Component Of(Velocity Of(Event Player)), Y Component Of(Player Variable(Event Player, velocitySlope)), Z Component Of(Velocity Of(Event Player))), Speed Of(Event Player), To World, Cancel Contrary Motion);
+        					Start Accelerating(Event Player, Player Variable(Event Player, downwardslope), Multiply(17.5, Sine From Degrees(Angle Between Vectors(Down, Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), -1)))), 1000, To World, None);
+        				Else If(And(Compare(Dot Product(Velocity Of(Event Player), Player Variable(Event Player, downwardslope)), <, 0), Compare(Throttle Of(Event Player), ==, Vector(Empty Array, Empty Array, Empty Array))));
+        					Apply Impulse(Event Player, Vector(X Component Of(Velocity Of(Event Player)), Y Component Of(Player Variable(Event Player, velocitySlope)), Z Component Of(Velocity Of(Event Player))), Horizontal Speed Of(Event Player), To World, Cancel Contrary Motion);
         					Start Accelerating(Event Player, Player Variable(Event Player, downwardslope), Multiply(17.5, Sine From Degrees(Angle Between Vectors(Down, Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), -1)))), 1000, To World, None);
         				End;
         				If(Compare(Sine From Degrees(Angle Between Vectors(Down, Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), -1))), >, 10));
         					Apply Impulse(Event Player, Player Variable(Event Player, downwardslope), Multiply(Multiply(Speed Of(Event Player), Sine From Degrees(Angle Between Vectors(Down, Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), -1)))), 0.016), To World, Incorporate Contrary Motion);
         				Else;
         					Apply Impulse(Event Player, Player Variable(Event Player, downwardslope), Multiply(Speed Of(Event Player), 0.016), To World, Incorporate Contrary Motion);
+        				End;
+        			Else;
+        				Apply Impulse(Event Player, Direction Towards(Player Variable(Event Player, filterpos), Player Variable(Event Player, fullbodypos)), 0.001, To World, Cancel Contrary Motion);
+        			End;
+        		Else;
+        			Set Player Variable At Index(Event Player, active_wall, Global Variable(z), 0);
+        		End;
+        	Else If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 8));
+        		Set Player Variable(Event Player, closestbodypos, Add(Position Of(Event Player), Vector(Empty Array, 0.5, Empty Array)));
+        		Set Player Variable(Event Player, fullbodypos, Vector(X Component Of(Eye Position(Event Player)), Y Component Of(Player Variable(Event Player, closestbodypos)), Z Component Of(Eye Position(Event Player))));
+        		Set Player Variable(Event Player, filterpos, Add(Player Variable(Event Player, fullbodypos), Multiply(Value In Array(Global Variable(AllDir), Global Variable(z)), Divide(Dot Product(Subtract(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), Dot Product(Value In Array(Global Variable(AllDir), Global Variable(z)), Value In Array(Global Variable(AllDir), Global Variable(z)))))));
+        		If(Compare(Compare(Dot Product(Direction Towards(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, lastsavedpos)), Value In Array(Global Variable(AllDir), Global Variable(z))), >, 0), !=, Compare(Dot Product(Direction Towards(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), >, 0)));
+        			Set Player Variable(Event Player, intersection_length_3, Divide(Dot Product(Subtract(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z))), Dot Product(Direction Towards(Player Variable(Event Player, lastsavedpos), Player Variable(Event Player, fullbodypos)), Value In Array(Global Variable(AllDir), Global Variable(z)))));
+        			Set Player Variable(Event Player, prevpos_intersection, Ray Cast Hit Position(Player Variable(Event Player, fullbodypos), Add(Player Variable(Event Player, fullbodypos), Multiply(Direction Towards(Player Variable(Event Player, lastsavedpos), Player Variable(Event Player, fullbodypos)), Player Variable(Event Player, intersection_length_3))), Null, Event Player, True));
+        			If(And(And(And(Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(firstpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Value In Array(Global Variable(firstpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, prevpos_intersection))), >=, 0)));
+        				Teleport(Event Player, Ray Cast Hit Position(Player Variable(Event Player, prevpos_intersection), Add(Player Variable(Event Player, prevpos_intersection), Multiply(Direction Towards(Player Variable(Event Player, prevpos_intersection), Player Variable(Event Player, lastsavedpos)), Vector(1, Empty Array, 1))), Null, Event Player, True));
+        				If(And(Compare(Hero Of(Event Player), ==, Hero(Doomfist)), Is Using Ability 2(Event Player)));
+        					Teleport(Event Player, Nearest Walkable Position(Player Variable(Event Player, prevpos_intersection)));
+        					Wait(0.016, Ignore Condition);
+        					Teleport(Event Player, Ray Cast Hit Position(Player Variable(Event Player, prevpos_intersection), Add(Player Variable(Event Player, prevpos_intersection), Up), Null, Event Player, True));
+        					Cancel Primary Action(Event Player);
+        				Else If(Compare(Hero Of(Event Player), ==, Hero(Wrecking Ball)));
+        					Cancel Primary Action(Event Player);
+        					Teleport(Event Player, Nearest Walkable Position(Player Variable(Event Player, prevpos_intersection)));
+        					Wait(0.016, Ignore Condition);
+        					Teleport(Event Player, Ray Cast Hit Position(Player Variable(Event Player, prevpos_intersection), Add(Player Variable(Event Player, prevpos_intersection), Up), Null, Event Player, True));
+        				End;
+        				Apply Impulse(Event Player, Value In Array(Global Variable(AllDir), Global Variable(z)), 0.001, To World, Cancel Contrary Motion);
+        			End;
+        		End;
+        		If(And(And(And(And(Compare(Distance Between(Player Variable(Event Player, filterpos), Player Variable(Event Player, fullbodypos)), <=, 1), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(firstpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Value In Array(Global Variable(firstpoint2), Global Variable(z))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)));
+        			If(Compare(Dot Product(Up, Direction Towards(Player Variable(Event Player, filterpos), Player Variable(Event Player, closestbodypos))), >, 0));
+        				Set Player Variable(Event Player, downwardslope_0, Multiply(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))), Dot Product(Down, Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))))));
+        				Set Player Variable(Event Player, velocitySlope_0, Multiply(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))), Dot Product(Velocity Of(Event Player), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))))));
+        				Set Player Variable(Event Player, side_velocitySlope, 0);
+        				If(Compare(Distance Between(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(firstpoint2), Global Variable(z))), >, Distance Between(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z)))));
+        					Set Player Variable(Event Player, side_velocitySlope, Multiply(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(firstpoint2), Global Variable(z))), Dot Product(Velocity Of(Event Player), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(firstpoint2), Global Variable(z))))));
+        				Else;
+        					Set Player Variable(Event Player, side_velocitySlope, Multiply(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))), Dot Product(Velocity Of(Event Player), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Value In Array(Global Variable(secondpoint2), Global Variable(z))))));
+        				End;
+        				If(Compare(Value In Array(Player Variable(Event Player, active_wall), Global Variable(z)), ==, False));
+        					Set Gravity(Event Player, 0);
+        					Set Player Variable At Index(Event Player, active_wall, Global Variable(z), 1);
+        				End;
+        				If(Compare(Dot Product(Multiply(Velocity Of(Event Player), Vector(1, Empty Array, 1)), Value In Array(Global Variable(AllDir), Global Variable(z))), <, 0));
+        					Apply Impulse(Event Player, Up, 0.001, To World, Cancel Contrary Motion);
+        					Apply Impulse(Event Player, Player Variable(Event Player, side_velocitySlope), Speed Of(Event Player), To World, Cancel Contrary Motion);
+        				Else If(Compare(Dot Product(Multiply(Velocity Of(Event Player), Vector(1, Empty Array, 1)), Value In Array(Global Variable(AllDir), Global Variable(z))), >, 0));
+        					Apply Impulse(Event Player, Value In Array(Global Variable(AllDir), Global Variable(z)), 0.001, To World, Cancel Contrary Motion);
+        					Apply Impulse(Event Player, Player Variable(Event Player, side_velocitySlope), Add(Speed Of(Event Player), 2), To World, Cancel Contrary Motion);
+        					Apply Impulse(Event Player, Player Variable(Event Player, side_velocitySlope), Multiply(Speed Of(Event Player), 0.016), To World, Incorporate Contrary Motion);
         				End;
         			Else;
         				Apply Impulse(Event Player, Direction Towards(Player Variable(Event Player, filterpos), Player Variable(Event Player, fullbodypos)), 0.001, To World, Cancel Contrary Motion);
