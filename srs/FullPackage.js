@@ -21,7 +21,8 @@ var RainOnMe = `variables
         14: beam_ID
         15: g_beamType
         16: initialized
-        17: x
+        17: sphereRadius
+        18: x
     player:
         0: _extendedPlayerCollection
         1: filterpos
@@ -39,6 +40,8 @@ var RainOnMe = `variables
         13: thickness_0
         14: intersection_length_1
         15: intersection_length_2
+        16: dir
+        17: intersection_length_3
 }
 
 // Extended collection variables:
@@ -109,12 +112,12 @@ rule("Collision Logic")
         Global Variable(initialized) == True;
     }
 
-    // Action count: 207
+    // Action count: 223
     actions
     {
         Set Player Variable(Event Player, lastsavedpos, Divide(Add(Eye Position(Event Player), Position Of(Event Player)), 2));
         Wait(0.016, Ignore Condition);
-        Set Player Variable(Event Player, closestwall, Filtered Array(Global Variable(AllPos), Or(Or(Or(Or(Compare(Value In Array(Player Variable(Event Player, active_wall), Current Array Index), ==, 1), Compare(Distance Between(Add(Event Player, Divide(Multiply(Value In Array(Global Variable(AllDir), Current Array Index), Dot Product(Subtract(Current Array Element, Event Player), Value In Array(Global Variable(AllDir), Current Array Index))), Dot Product(Value In Array(Global Variable(AllDir), Current Array Index), Value In Array(Global Variable(AllDir), Current Array Index)))), Event Player), <, 2)), Compare(Compare(Dot Product(Direction Towards(Current Array Element, Player Variable(Event Player, lastsavedpos)), Value In Array(Global Variable(AllDir), Current Array Index)), >, 0), !=, Compare(Dot Product(Direction Towards(Current Array Element, Event Player), Value In Array(Global Variable(AllDir), Current Array Index)), >, 0))), Compare(Value In Array(Global Variable(Wall_ID), Current Array Index), ==, 6)), Compare(Value In Array(Global Variable(Wall_ID), Current Array Index), ==, 9))));
+        Set Player Variable(Event Player, closestwall, Filtered Array(Global Variable(AllPos), Or(Or(Compare(Distance Between(Value In Array(Global Variable(AllPos), Current Array Index), Event Player), <=, Distance Between(Value In Array(Global Variable(AllPos), Current Array Index), Value In Array(Global Variable(firstpos), Current Array Index))), Compare(Value In Array(Player Variable(Event Player, active_wall), Current Array Index), ==, 1)), Compare(Compare(Dot Product(Direction Towards(Current Array Element, Player Variable(Event Player, lastsavedpos)), Value In Array(Global Variable(AllDir), Current Array Index)), >, 0), !=, Compare(Dot Product(Direction Towards(Current Array Element, Event Player), Value In Array(Global Variable(AllDir), Current Array Index)), >, 0)))));
         For Player Variable(Event Player, x, 0, Count Of(Player Variable(Event Player, closestwall)), 1);
         	Set Global Variable(z, Index Of Array Value(Global Variable(AllPos), Value In Array(Player Variable(Event Player, closestwall), Player Variable(Event Player, x))));
         	If(Or(Or(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 1), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 3)), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 5)));
@@ -144,6 +147,9 @@ rule("Collision Logic")
         			Set Player Variable(Event Player, thickness, 1);
         		End;
         		If(And(And(And(And(Compare(Distance Between(Player Variable(Event Player, fullbodypos), Player Variable(Event Player, filterpos)), <=, Player Variable(Event Player, thickness)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(firstpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)), Compare(Dot Product(Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(z))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(z))))), Direction Towards(Value In Array(Global Variable(secondpos), Global Variable(z)), Player Variable(Event Player, filterpos))), >=, 0)));
+        			If(Not(Player Variable(Event Player, is_Grounded)));
+        				Set Gravity(Event Player, 100);
+        			End;
         			If(Compare(Value In Array(Player Variable(Event Player, active_wall), Global Variable(z)), ==, False));
         				Set Player Variable At Index(Event Player, active_wall, Global Variable(z), 1);
         				If(And(Or(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 1), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 3)), Compare(Player Variable(Event Player, is_Grounded), ==, False)));
@@ -316,13 +322,26 @@ rule("Collision Logic")
         		Else;
         			Set Player Variable At Index(Event Player, active_wall, Global Variable(z), 0);
         		End;
+        	Else If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(z)), ==, 9));
+        		Set Player Variable(Event Player, dir, Direction Towards(Add(Value In Array(Global Variable(AllPos), Global Variable(z)), Multiply(Direction Towards(Value In Array(Global Variable(AllPos), Global Variable(z)), Event Player), Value In Array(Global Variable(sphereRadius), Global Variable(z)))), Event Player));
+        		If(Compare(Compare(Dot Product(Direction Towards(Value In Array(Global Variable(AllPos), Global Variable(z)), Player Variable(Event Player, lastsavedpos)), Player Variable(Event Player, dir)), >, 0), !=, Compare(Dot Product(Direction Towards(Value In Array(Global Variable(AllPos), Global Variable(z)), Event Player), Player Variable(Event Player, dir)), >, 0)));
+        			Set Player Variable(Event Player, intersection_length_3, Divide(Dot Product(Subtract(Value In Array(Global Variable(AllPos), Global Variable(z)), Event Player), Player Variable(Event Player, dir)), Dot Product(Direction Towards(Player Variable(Event Player, lastsavedpos), Event Player), Player Variable(Event Player, dir))));
+        			Set Player Variable(Event Player, prevpos_intersection, Ray Cast Hit Position(Event Player, Add(Event Player, Multiply(Direction Towards(Player Variable(Event Player, lastsavedpos), Event Player), Player Variable(Event Player, intersection_length_3))), Null, Event Player, True));
+        			Teleport(Event Player, Ray Cast Hit Position(Player Variable(Event Player, prevpos_intersection), Add(Player Variable(Event Player, prevpos_intersection), Direction Towards(Player Variable(Event Player, prevpos_intersection), Player Variable(Event Player, lastsavedpos))), Null, Event Player, True));
+        			Apply Impulse(Event Player, Player Variable(Event Player, dir), 0.001, To World, Cancel Contrary Motion XYZ);
+        		End;
+        		If(Compare(Distance Between(Event Player, Add(Value In Array(Global Variable(AllPos), Global Variable(z)), Multiply(Direction Towards(Value In Array(Global Variable(AllPos), Global Variable(z)), Event Player), Value In Array(Global Variable(sphereRadius), Global Variable(z))))), <, 1));
+        			Apply Impulse(Event Player, Player Variable(Event Player, dir), 1, To World, Cancel Contrary Motion XYZ);
+        		Else;
+        			Set Player Variable At Index(Event Player, active_wall, Global Variable(z), 0);
+        		End;
         	End;
         End;
         Loop;
     }
 }
 
-rule("Reset")
+rule("Disables stuff")
 {
 
     event
@@ -397,13 +416,13 @@ rule("Effect Creation")
         Ongoing - Global;
     }
 
-    // Action count: 150
+    // Action count: 152
     actions
     {
         Wait(5, Ignore Condition);
         If(Global Variable(showwalls));
         	For Global Variable(x, 0, Count Of(Global Variable(AllPos)), 1);
-        		If(Or(Or(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 1), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 3)), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 5)));
+        		If(Array Contains(Array(1, 3, 5), Value In Array(Global Variable(Wall_ID), Global Variable(x))));
         			If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 5));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Color(Red), Visible To);
         				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
@@ -474,7 +493,7 @@ rule("Effect Creation")
         				Set Global Variable At Index(_arrayBuilder, 3, Last Created Entity);
         				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
         			End;
-        		Else If(Or(Or(Or(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 2), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 4)), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 6)), Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 7)));
+        		Else If(Array Contains(Array(2, 4, 6, 7, 8), Value In Array(Global Variable(Wall_ID), Global Variable(x))));
         			If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 6));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Red), Visible To);
         				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
@@ -545,6 +564,8 @@ rule("Effect Creation")
         				Set Global Variable At Index(_arrayBuilder, 3, Last Created Entity);
         				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
         			End;
+        		Else If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 9));
+        			Create Effect(All Players(Team(All)), Sphere, Color(Orange), Value In Array(Global Variable(AllPos), Global Variable(x)), Value In Array(Global Variable(sphereRadius), Global Variable(x)), Visible To);
         		End;
         		Wait(0.016, Ignore Condition);
         	End;
