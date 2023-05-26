@@ -6,7 +6,7 @@ var Vertical = `variables
 {
     global:
         0: _extendedGlobalCollection
-        1: _arrayBuilder
+        1: _arrayConstructor
         2: AllPos
         3: AllDir
         4: firstpos
@@ -18,7 +18,7 @@ var Vertical = `variables
         10: Wall_ID
         11: showwalls
         12: destroyall
-        13: _arrayBuilder_0
+        13: _arrayConstructor_0
         14: is_Grounded
         15: g_beamType
         16: x
@@ -37,7 +37,7 @@ var Vertical = `variables
 }
 
 // Extended collection variables:
-// global [0]: _arrayBuilderStore
+// global [0]: _arrayConstructorStore
 
 // Class identifiers:
 

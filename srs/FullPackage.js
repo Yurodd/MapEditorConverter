@@ -5,7 +5,7 @@ var RainOnMe = `variables
 {
     global:
         0: _extendedGlobalCollection
-        1: _arrayBuilder
+        1: _arrayConstructor
         2: AllPos
         3: AllDir
         4: firstpos
@@ -17,7 +17,7 @@ var RainOnMe = `variables
         10: Wall_ID
         11: showwalls
         12: destroyall
-        13: _arrayBuilder_0
+        13: _arrayConstructor_0
         14: beam_ID
         15: g_beamType
         16: initialized
@@ -45,7 +45,7 @@ var RainOnMe = `variables
 }
 
 // Extended collection variables:
-// global [0]: _arrayBuilderStore
+// global [0]: _arrayConstructorStore
 
 // Class identifiers:
 
@@ -425,144 +425,144 @@ rule("Effect Creation")
         		If(Array Contains(Array(1, 3, 5), Value In Array(Global Variable(Wall_ID), Global Variable(x))));
         			If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 5));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Color(Red), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
-        				Set Global Variable At Index(_arrayBuilder, 0, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
+        				Set Global Variable At Index(_arrayConstructor, 0, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Red), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 1, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 1, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Add(Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(0.001, Empty Array, Empty Array)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Color(Red), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 2, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 2, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Red), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 3, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 3, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         			Else;
         Skip(Value In Array(Array(50, 0, 17, 34), Add(Index Of Array Value(Array(1, 2, 3), Value In Array(Global Variable(g_beamType), Global Variable(x))), 1)));
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
-        				Set Global Variable At Index(_arrayBuilder, 0, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
+        				Set Global Variable At Index(_arrayConstructor, 0, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 1, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 1, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Add(Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(0.001, Empty Array, Empty Array)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 2, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 2, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 3, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 3, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         Skip(33);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
-        				Set Global Variable At Index(_arrayBuilder, 0, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
+        				Set Global Variable At Index(_arrayConstructor, 0, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 1, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 1, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Add(Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(0.001, Empty Array, Empty Array)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 2, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 2, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 3, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 3, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         Skip(16);
         				Create Beam Effect(All Players(Team(All)), Bad Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
-        				Set Global Variable At Index(_arrayBuilder, 0, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
+        				Set Global Variable At Index(_arrayConstructor, 0, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Bad Beam, Vector(X Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(secondpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 1, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 1, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Bad Beam, Add(Value In Array(Global Variable(firstpos), Global Variable(x)), Vector(0.001, Empty Array, Empty Array)), Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 2, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 2, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Bad Beam, Vector(X Component Of(Value In Array(Global Variable(firstpos), Global Variable(x))), Y Component Of(Value In Array(Global Variable(secondpos), Global Variable(x))), Z Component Of(Value In Array(Global Variable(firstpos), Global Variable(x)))), Add(Value In Array(Global Variable(secondpos), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 3, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 3, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         			End;
         		Else If(Array Contains(Array(2, 4, 6, 7, 8), Value In Array(Global Variable(Wall_ID), Global Variable(x))));
         			If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 6));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Red), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
-        				Set Global Variable At Index(_arrayBuilder, 0, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
+        				Set Global Variable At Index(_arrayConstructor, 0, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Value In Array(Global Variable(secondpos), Global Variable(x)), Color(Red), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 1, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 1, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Value In Array(Global Variable(secondpos), Global Variable(x)), Add(Value In Array(Global Variable(secondpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Red), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 2, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 2, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Add(Value In Array(Global Variable(secondpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Value In Array(Global Variable(firstpos), Global Variable(x)), Color(Red), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 3, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 3, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         			Else;
         Skip(Value In Array(Array(50, 0, 17, 34), Add(Index Of Array Value(Array(1, 2, 3), Value In Array(Global Variable(g_beamType), Global Variable(x))), 1)));
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
-        				Set Global Variable At Index(_arrayBuilder, 0, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
+        				Set Global Variable At Index(_arrayConstructor, 0, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Value In Array(Global Variable(secondpos), Global Variable(x)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 1, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 1, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Value In Array(Global Variable(secondpos), Global Variable(x)), Add(Value In Array(Global Variable(secondpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 2, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 2, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Grapple Beam, Add(Value In Array(Global Variable(secondpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Value In Array(Global Variable(firstpos), Global Variable(x)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 3, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 3, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         Skip(33);
         				Create Beam Effect(All Players(Team(All)), Good Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
-        				Set Global Variable At Index(_arrayBuilder, 0, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
+        				Set Global Variable At Index(_arrayConstructor, 0, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Value In Array(Global Variable(secondpos), Global Variable(x)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 1, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 1, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Value In Array(Global Variable(secondpos), Global Variable(x)), Add(Value In Array(Global Variable(secondpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 2, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 2, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Good Beam, Add(Value In Array(Global Variable(secondpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Value In Array(Global Variable(firstpos), Global Variable(x)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 3, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 3, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         Skip(16);
         				Create Beam Effect(All Players(Team(All)), Bad Beam, Value In Array(Global Variable(firstpos), Global Variable(x)), Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
-        				Set Global Variable At Index(_arrayBuilder, 0, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Count Of(Global Variable(beam_ID))));
+        				Set Global Variable At Index(_arrayConstructor, 0, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Count Of(Global Variable(beam_ID)), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Bad Beam, Add(Value In Array(Global Variable(firstpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Value In Array(Global Variable(secondpos), Global Variable(x)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 1, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 1, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Bad Beam, Value In Array(Global Variable(secondpos), Global Variable(x)), Add(Value In Array(Global Variable(secondpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 2, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 2, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         				Create Beam Effect(All Players(Team(All)), Bad Beam, Add(Value In Array(Global Variable(secondpoint2), Global Variable(x)), Vector(Empty Array, Empty Array, 0.001)), Value In Array(Global Variable(firstpos), Global Variable(x)), Color(Aqua), Visible To);
-        				Set Global Variable(_arrayBuilder, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
-        				Set Global Variable At Index(_arrayBuilder, 3, Last Created Entity);
-        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayBuilder));
+        				Set Global Variable(_arrayConstructor, Value In Array(Global Variable(beam_ID), Subtract(Count Of(Global Variable(beam_ID)), 1)));
+        				Set Global Variable At Index(_arrayConstructor, 3, Last Created Entity);
+        				Set Global Variable At Index(beam_ID, Subtract(Count Of(Global Variable(beam_ID)), 1), Global Variable(_arrayConstructor));
         			End;
         		Else If(Compare(Value In Array(Global Variable(Wall_ID), Global Variable(x)), ==, 9));
         			Create Effect(All Players(Team(All)), Sphere, Color(Orange), Value In Array(Global Variable(AllPos), Global Variable(x)), Value In Array(Global Variable(sphereRadius), Global Variable(x)), Visible To);

@@ -267,7 +267,7 @@ if (HasSpawned())
                                 //StartThrottleInDirection(eventPlayer,null,false,Relative.ToWorld,ThrottleBehavior.AddToExistingThrottle,ThrottleRev.None);
                                 ApplyImpulse(eventPlayer, DirectionTowards(filterpos,fullbodypos) * Vector(1,0,1), 0.001);
                                  if(ThrottleOf()!= Vector())
-                                SetMoveSpeed(eventPlayer,100 - (DotProduct(DirectionTowards(EyePosition(),EyePosition() + WorldVectorOf(ThrottleOf(),eventPlayer)),-DirectionTowards(filterpos,fullbodypos)) * 100));
+                                SetMoveSpeed(eventPlayer,100 - (DotProduct(DirectionTowards(EyePosition(),EyePosition() + WorldVectorOf(ThrottleOf(),eventPlayer)),-1*DirectionTowards(filterpos,fullbodypos)) * 100));
                                // StartThrottleInDirection(eventPlayer,null,false,Relative.ToWorld,ThrottleBehavior.AddToExistingThrottle,ThrottleRev.None);
                                 
                             }
@@ -1224,7 +1224,7 @@ if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 4)
             second = s + CrossProduct(DirectionTowards(horizontal_points[0],s),CrossProduct(DirectionTowards(horizontal_points[0],s),-1  * DirectionTowards(horizontal_points[0],point))) * (DistanceBetween(horizontal_points[0],point) );
             seconds = second + -1  * (DirectionTowards(horizontal_points[0],horizontal_points[1])* Vector(1,0,1))*DistanceBetween(horizontal_points[0],horizontal_points[1]);
             //angle = AngleBetweenVectors(Down(),-CrossProduct(DirectionTowards(horizontal_points[0],second),DirectionTowards(horizontal_points[0],horizontal_points[1])));
-            angle = AngleBetweenVectors(Down(),-Normalize(CrossProduct(-CrossProduct(DirectionTowards(horizontal_points[0],seconds) * DotProduct(Down(),DirectionTowards(horizontal_points[0],seconds)),Up()),DirectionTowards(horizontal_points[0],seconds) * DotProduct(Up(),DirectionTowards(horizontal_points[0],seconds)))));
+            angle = AngleBetweenVectors(Down(),-1*Normalize(CrossProduct(-1*CrossProduct(DirectionTowards(horizontal_points[0],seconds) * DotProduct(Down(),DirectionTowards(horizontal_points[0],seconds)),Up()),DirectionTowards(horizontal_points[0],seconds) * DotProduct(Up(),DirectionTowards(horizontal_points[0],seconds)))));
             Wait(0.016);
             }
 
@@ -1247,7 +1247,7 @@ if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 4)
 
             //AllDir[CountOf(AllDir)] = -CrossProduct(DirectionTowards(horizontal_points[0],s),DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1]));
             
-            AllDir[CountOf(AllDir)] = Normalize(CrossProduct(-CrossProduct(DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1]) * DotProduct(Down(),DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1])),Up()),DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1]) * DotProduct(Up(),DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1]))));
+            AllDir[CountOf(AllDir)] = Normalize(CrossProduct(-1*CrossProduct(DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1]) * DotProduct(Down(),DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1])),Up()),DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1]) * DotProduct(Up(),DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1]))));
             Wall_ID[CountOf(Wall_ID)] = UI_ID;
             ///^Slope Normal = Cross(LeftOfSlope, UpOfSlope)
             // if(SineFromDegrees(AngleBetweenVectors(Down(),-AllDir[CountOf(AllDir)-1])) <= 2)
@@ -2174,7 +2174,7 @@ define UpAxis(Vector zAxis): DirectionFromAngles(HorizontalAngleFromDirection(zA
 define RightAxis(Vector zAxis): CrossProduct(zAxis, UpAxis(zAxis));
 
 define ScreenToWorldForPlayer(define player, define x, define y): ScreenToWorld(EyePosition(player), UI_FacingDir, x, y);
-define ScreenToWorld(Vector position, Vector zAxis, define x, define y): RayCastHitPosition(position,position + 2 *(x*RightAxis(zAxis) + (y-0.2)*UpAxis(zAxis) + 3*zAxis));
+define ScreenToWorld(Vector position, Vector zAxis, define x, define y): RayCastHitPosition(position,<Vector>(position + 2 * (x * RightAxis(zAxis) + (y-0.2) * UpAxis(zAxis) + 3 * zAxis)));
 
 rule: "IWT Pos"
 Event.OngoingPlayer
