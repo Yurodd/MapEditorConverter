@@ -1,0 +1,9 @@
+{
+  "Modes": {
+    "Skirmish": {
+      "Enabled Maps": [
+        "Workshop Island (Night)"
+      ]
+    }
+  }
+}

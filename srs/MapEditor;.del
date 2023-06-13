@@ -1,3 +1,4 @@
+import "customGameSettings.lobby";
 globalvar define AllPos = EmptyArray();
 globalvar define AllDir = EmptyArray();
 playervar define filterpos = EmptyArray();
@@ -92,7 +93,7 @@ if(strafeToggle && !flymode)
     {
         if(SpeedOfInDirection(eventPlayer,Normalize(WorldVectorOf(Vector(0,0,1),eventPlayer))) > 1)
         {
-        
+
         if (ZOf(ThrottleOf(EventPlayer())) <= 0.5 && XOf(ThrottleOf(EventPlayer())) != 0 && DotProduct(prev_throttledir * Vector(1,0,1), FacingDirectionOf() * Vector(1, 0, 1)) > 0)
         {
             // currentspeed = DotProduct(VelocityOf(EventPlayer()), Normalize(Normalize(WorldVectorOf(ThrottleOf(EventPlayer()), EventPlayer(), LocalVector.Rotation)) + FacingDirectionOf(EventPlayer()) * Vector(1, [], 1)));
@@ -124,14 +125,14 @@ if(strafeToggle && !flymode)
         {
              ApplyImpulse(EventPlayer(),FacingDirectionOf() * Vector(1,0,1) ,max_horizontal_speed);
             ApplyImpulse(EventPlayer(), CrossProduct(Vector(0,XOf(ThrottleOf()),0), FacingDirectionOf() * Vector(1,0,1)), 0.001, Relative.ToWorld, ContraryMotion.Cancel);
-            
+
         }
 
         else{
              ApplyImpulse(EventPlayer(), Normalize(VelocityOf()) * Vector(1,0,1), max_horizontal_speed, Relative.ToWorld, ContraryMotion.Cancel);
-            
+
         }
-        
+
 
             if(DistanceBetween(RayCastHitPosition(EyePosition(),EyePosition() + Down() * 100),PositionOf()) < 0.3 && IsButtonHeld(eventPlayer,Button.Jump)
             && IsTrueForAll(inEraser,ArrayElement() == false))
@@ -166,10 +167,10 @@ rule: "Main Collision Logic"
 Event.OngoingPlayer
 if (HasSpawned())
 {
-    
+
     lastsavedpos = Midpoint(EyePosition(),PositionOf());
 
-    MinWait();   
+    MinWait();
 
     if(!flymode)
         {
@@ -181,8 +182,8 @@ if (HasSpawned())
              closestwall = FilteredArray(AllPos,
              DistanceBetween(AllPos[CurrentArrayIndex()],eventPlayer) <= DistanceBetween(AllPos[CurrentArrayIndex()],firstpos[CurrentArrayIndex()])
              || active_wall[CurrentArrayIndex()] == 1 || (DotProduct(DirectionTowards(ArrayElement(),lastsavedpos),AllDir[CurrentArrayIndex()]) > 0) != (DotProduct(DirectionTowards(ArrayElement(),eventPlayer),AllDir[CurrentArrayIndex()]) > 0)
-             ); 
-            
+             );
+
             for( define x =0; CountOf(closestwall);1)
             {
                 z = IndexOfArrayValue(AllPos,closestwall[x]);
@@ -204,7 +205,7 @@ if (HasSpawned())
                 //closestbodypos = FirstOf(SortedArray(allbodypos,DistanceBetween(ArrayElement(),AllPos[z])));
                 fullbodypos = Vector(XOf(EyePosition()),YOf(closestbodypos),ZOf(EyePosition()));
                 filterpos = fullbodypos + AllDir[z] * DotProduct(AllPos[z] - fullbodypos,AllDir[z]) / DotProduct(AllDir[z], AllDir[z]);
-                
+
                 if(Wall_ID[z] == 1 || Wall_ID[z] == 3)
                     {
 
@@ -229,7 +230,7 @@ if (HasSpawned())
                         }
                     }
 
-                        
+
                     define thickness;
                     if(Wall_ID[z] ==5)
                     thickness = 4;
@@ -244,17 +245,17 @@ if (HasSpawned())
                             if(active_wall[z] == false)
                                     {
                                         active_wall[z] = 1;
-                                        
+
                                         // if((Wall_ID[z] == 1 || Wall_ID[z] == 3) && is_Grounded == false)
                                         // SetGravity(eventPlayer,100);
                                          if(Wall_ID[z] == 5)
                                         DisableMovementCollisionWithEnvironment();
-                                        
+
                                     }
-                            
+
                             if(Wall_ID[z] == 1)
                             {
-                                
+
                                 // if(DistanceBetween(fullbodypos,filterpos)<=0.8)
                                 // {
                                 // //Teleport(eventPlayer,PositionOf() + DirectionTowards(Vector(XOf(filterpos),YOf(PositionOf()),ZOf(filterpos)),PositionOf()) * (1.00000001-1  * DistanceBetween(PositionOf(),Vector(XOf(filterpos),YOf(PositionOf()),ZOf(filterpos)))));
@@ -267,9 +268,9 @@ if (HasSpawned())
                                 //StartThrottleInDirection(eventPlayer,null,false,Relative.ToWorld,ThrottleBehavior.AddToExistingThrottle,ThrottleRev.None);
                                 ApplyImpulse(eventPlayer, DirectionTowards(filterpos,fullbodypos) * Vector(1,0,1), 0.001);
                                  if(ThrottleOf()!= Vector())
-                                SetMoveSpeed(eventPlayer,100 - (DotProduct(DirectionTowards(EyePosition(),EyePosition() + WorldVectorOf(ThrottleOf(),eventPlayer)),-DirectionTowards(filterpos,fullbodypos)) * 100));
+                                SetMoveSpeed(eventPlayer,100 - (DotProduct(DirectionTowards(EyePosition(),EyePosition() + WorldVectorOf(ThrottleOf(),eventPlayer)),-1*DirectionTowards(filterpos,fullbodypos)) * 100));
                                // StartThrottleInDirection(eventPlayer,null,false,Relative.ToWorld,ThrottleBehavior.AddToExistingThrottle,ThrottleRev.None);
-                                
+
                             }
                             else if(Wall_ID[z] == 3)
                             {
@@ -283,7 +284,7 @@ if (HasSpawned())
                                     inEraser[z] = true;
                                 }
                             }
-                        
+
                         //ApplyImpulse(eventPlayer, DirectionTowards(filterpos,EyePosition()) * Vector(1,0,1),SpeedOf() * 0.001);
                     }
                     else
@@ -291,13 +292,13 @@ if (HasSpawned())
                         active_wall[z] = 0;
                         SetMoveSpeed(eventPlayer,100);
                         inEraser[z] = false;
-                        //lastsavedpos = PositionOf();   
+                        //lastsavedpos = PositionOf();
                     }
-                
+
                 }
                  else if(Wall_ID[z] == 2 || Wall_ID[z] == 6 || Wall_ID[z] == 7) // 2 = horizontal, 6 = horizontal erasor 7 = slidey horizontal
                 {
-                    
+
                     if(YOf(firstpos[z]) >= YOf(PositionOf()) && YOf(firstpos[z]) <= YOf(EyePosition()+Vector(0,0.2,0)))
                     {
                         closestbodypos = firstpos[z];
@@ -310,7 +311,7 @@ if (HasSpawned())
                     {
                         closestbodypos = EyePosition();
                     }
-                     
+
                     fullbodypos = Vector(XOf(EyePosition()),YOf(closestbodypos),ZOf(EyePosition()));
                     filterpos = fullbodypos + AllDir[z] * DotProduct(AllPos[z] - fullbodypos,AllDir[z]) / DotProduct(AllDir[z], AllDir[z]);
 
@@ -337,22 +338,22 @@ if (HasSpawned())
                                         }
                                         else
                                         Teleport(eventPlayer,prevpos_intersection + Up() * 1);
-                                
+
                                 }
                             }
-                        
-                        }            
-                        
+
+                        }
+
                     }
                         define thickness;
                         if(Wall_ID[z] ==6)
                         thickness = 6;
                         else
                         thickness = 0.5;
-                        
+
                     if(DistanceBetween(filterpos,fullbodypos)<=thickness && fttr2 >= 0 && ftbl2 >= 0 && sttr2 >= 0 && stbl2 >= 0)
                     {
-                             
+
                             if(Wall_ID[z] == 2)
                             {
                                 if(DotProduct(Down(),DirectionTowards(fullbodypos,filterpos))>0)
@@ -360,7 +361,7 @@ if (HasSpawned())
                                     if(active_wall[z] == false)
                                     {
                                        is_Grounded = true;
-                                       
+
                                         SetGravity(eventPlayer,0);
                                         active_wall[z] = 1;
                                         ApplyImpulse(eventPlayer, Up(), 0.001);
@@ -370,7 +371,7 @@ if (HasSpawned())
                                             ApplyImpulse(eventPlayer, Left(), 0.001);
                                             ApplyImpulse(eventPlayer, Right(), 0.001);
                                             ApplyImpulse(eventPlayer, Forward(), 0.001);
-                                            ApplyImpulse(eventPlayer, Backward(), 0.001); 
+                                            ApplyImpulse(eventPlayer, Backward(), 0.001);
                                         }
                                     }
 
@@ -384,7 +385,7 @@ if (HasSpawned())
                                     //  horizontal_intersection = fullbodypos + AllDir[z] * DotProduct(AllPos[z] - fullbodypos,AllDir[z]) / DotProduct(AllDir[z], AllDir[z]);
                                     // ApplyImpulse(eventPlayer, DirectionTowards(horizontal_intersection,fullbodypos) * Vector(1,0,1), 0.001);
                                     // }
- 
+
 
                                      if(IsButtonHeld(eventPlayer,Button.Jump))
                                      ApplyImpulse(eventPlayer, Up(), 5.5);
@@ -401,11 +402,11 @@ if (HasSpawned())
                                             ApplyImpulse(eventPlayer, Left(), 0.001);
                                             ApplyImpulse(eventPlayer, Right(), 0.001);
                                             ApplyImpulse(eventPlayer, Forward(), 0.001);
-                                            ApplyImpulse(eventPlayer, Backward(), 0.001); 
+                                            ApplyImpulse(eventPlayer, Backward(), 0.001);
                                         }
 
                                 }
-                                else 
+                                else
                                 {
                                     ApplyImpulse(eventPlayer, Down(), 0.001);
                                 }
@@ -420,7 +421,7 @@ if (HasSpawned())
                                         DisableMovementCollisionWithEnvironment(eventPlayer,true);
                                     }
                                     inEraser[z] = true;
-                                
+
                             }
                             else if(Wall_ID[z] == 7)
                             {
@@ -440,7 +441,7 @@ if (HasSpawned())
                                     ApplyImpulse(eventPlayer, Down(), 0.001);
                                 }
                             }
-                        
+
                     }
                     else
                     {
@@ -452,7 +453,7 @@ if (HasSpawned())
                 }
                 else if(Wall_ID[z] == 4 || Wall_ID[z] == 8) //sloped wall
                 {
-                    
+
                      closestbodypos = PositionOf()+Vector(0,0.5,0);
                     fullbodypos = Vector(XOf(EyePosition()),YOf(closestbodypos),ZOf(EyePosition()));
                     filterpos = fullbodypos + AllDir[z] * DotProduct(AllPos[z] - fullbodypos,AllDir[z]) / DotProduct(AllDir[z], AllDir[z]);
@@ -491,7 +492,7 @@ if (HasSpawned())
                                     //SmallMessage(eventPlayer,"gravity");
 
                                     }
-                            
+
                         }
 
 
@@ -502,8 +503,8 @@ if (HasSpawned())
 
                     if(DistanceBetween(filterpos,fullbodypos)<=1 &&fttr2 >= 0 && ftbl2 >= 0 && sttr2 >= 0 && stbl2 >= 0)
                     {
- 
-                             
+
+
                                 //ApplyImpulse(eventPlayer, Left(), 0.001);
                                //ApplyImpulse(eventPlayer, Right(), 0.001);
                               //ApplyImpulse(eventPlayer, Forward(), 0.001);
@@ -515,12 +516,12 @@ if (HasSpawned())
 
                             if(DotProduct(Up(),DirectionTowards(filterpos,closestbodypos))>0)
                                {
-                                
+
                                 if(active_wall[z] == false)
                                     {
                                         active_wall[z] = true;
                                     }
- 
+
                                 // downwardslope = DirectionTowards(firstpos[z],secondpoint2[z]) * DotProduct(Down(),DirectionTowards(firstpos[z],secondpoint2[z]));
                                 //  velocitySlope = DirectionTowards(firstpos[z],secondpoint2[z]) * DotProduct(VelocityOf(),DirectionTowards(firstpos[z],secondpoint2[z]));
                                // side_velocitySlope = DirectionTowards(firstpos[z],firstpoint2[z]) * DotProduct(VelocityOf(),DirectionTowards(firstpos[z],firstpoint2[z]));
@@ -528,11 +529,11 @@ if (HasSpawned())
 
                                 //                 //ForceThrottle(eventPlayer,0,0,0,0,0,0);
                                 //                 SetGravity(eventPlayer,0);
-                                               
+
                                 //                // ApplyImpulse(eventPlayer,-VelocityOf(),0.001);
                                 //                 active_wall[z] = 1;
                                 //     }
-                            
+
 
                                 //ApplyImpulse(eventPlayer,Up(),0.001);
                                 ApplyImpulse(eventPlayer,AllDir[z],0.001,Relative.ToWorld,ContraryMotion.CancelXYZ);
@@ -546,12 +547,12 @@ if (HasSpawned())
 
                                 current_Slope_Dir = AllDir[z];
                                 }
-                               
+
                                 //ApplyImpulse(eventPlayer,Vector(XOf(VelocityOf()),YOf(velocitySlope),ZOf(VelocityOf())),max_horizontal_speed);
 
                                // if(DotProduct(AllDir[z] * Vector(1,0,1),Normalize(WorldVectorOf(ThrottleOf(),eventPlayer))) < 0 )
                                // {
-                                    
+
                                 //ApplyImpulse(eventPlayer,side_velocitySlope,SpeedOf());
                                 //ApplyImpulse(eventPlayer,aim_velocitySlope,SpeedOf() / 5);
                                 //StartAccelerating(eventPlayer,aim_velocitySlope,100,1000,Relative.ToWorld,AccelerateRev.None)
@@ -560,7 +561,7 @@ if (HasSpawned())
                                // }
 
 
-                            
+
                                 // else
                                 // {
                                 // ApplyImpulse(eventPlayer,Vector(XOf(VelocityOf()),YOf(velocitySlope),ZOf(VelocityOf())),HorizontalSpeedOf());
@@ -615,19 +616,19 @@ if (HasSpawned())
                         {
                             define intersection_length = DotProduct(AllPos[z] - eventPlayer,dir) / DotProduct(DirectionTowards(lastsavedpos,eventPlayer) , dir);
                                prevpos_intersection = RayCastHitPosition(eventPlayer,eventPlayer + (DirectionTowards(lastsavedpos,eventPlayer)) * intersection_length);
- 
+
                                     Teleport(eventPlayer, RayCastHitPosition(prevpos_intersection,prevpos_intersection + DirectionTowards(prevpos_intersection,lastsavedpos) * 1));
-                                   
+
                                     ApplyImpulse(eventPlayer,dir,0.001,Relative.ToWorld,ContraryMotion.CancelXYZ);
 
-                                    
-                            
+
+
                         }
 
                     if(DistanceBetween(eventPlayer,AllPos[z] + DirectionTowards(AllPos[z],eventPlayer) * sphereRadius[z])<1)
                     {
-                         
-                         
+
+
                         // define downwardslope = CrossProduct(CrossProduct(Up(),dir),dir) * DotProduct(Down(),CrossProduct(CrossProduct(Up(),dir),dir));
                         // define velocitySlope = CrossProduct(CrossProduct(Up(),dir),dir) * DotProduct(VelocityOf(),CrossProduct(CrossProduct(Up(),dir),dir));
 
@@ -646,7 +647,7 @@ if (HasSpawned())
                             //     ApplyImpulse(eventPlayer, downwardslope,(SpeedOf() * SineFromDegrees(AngleBetweenVectors(Down(),-1  * Dir)))*0.016,Relative.ToWorld,ContraryMotion.Incorporate);
                                 //ApplyImpulse(eventPlayer,Up(),0.001);
                                  //ApplyImpulse(eventPlayer,Vector(XOf(VelocityOf()),YOf(velocitySlope),ZOf(VelocityOf())),SpeedOf());
-                               
+
                                 // if(DotProduct(VelocityOf(),downwardslope)>=0)
                                 // {
                                 // //ApplyImpulse(eventPlayer,Vector(XOf(VelocityOf()),YOf(velocitySlope),ZOf(VelocityOf())),SpeedOf());
@@ -672,10 +673,7 @@ if (HasSpawned())
                     active_wall[z] = 0;
                     }
                 }
-
-                    // fullbodypos = Vector(XOf(EyePosition()),YOf(closestbodypos),ZOf(EyePosition()));
-                    // lastsavedpos = fullbodypos;   
-            }     
+            }
          }
          else
          {
@@ -704,16 +702,16 @@ while(arcballMode)
     outercampos = point;
 
     Wait(0.016);
-    
+
     if(ThrottleOf() != Vector())
     {
-        
+
          if(!IsInLineOfSight(point,RayCastHitPosition(point,point + Vector(XOf(Normalize(WorldVectorOf(ThrottleOf(),eventPlayer))),YOf(FacingDirectionOf() * Vector(1,-1,1)),ZOf(Normalize(WorldVectorOf(ThrottleOf(),eventPlayer)))) * -0.1)) || point == RayCastHitPosition(point,point + Vector(XOf(Normalize(WorldVectorOf(ThrottleOf(),eventPlayer))),YOf(FacingDirectionOf() * Vector(1,-1,1)),ZOf(Normalize(WorldVectorOf(ThrottleOf(),eventPlayer)))) * -0.1))
          {
              define hitnormal = RayCastHitNormal(point,point + Vector(XOf(Normalize(WorldVectorOf(ThrottleOf(),eventPlayer))),YOf(FacingDirectionOf() * Vector(1,-1,1)),ZOf(Normalize(WorldVectorOf(ThrottleOf(),eventPlayer)))) * -0.1);
             define undesiredMotion = hitnormal * DotProduct(Vector(XOf(Normalize(WorldVectorOf(ThrottleOf(),eventPlayer))),YOf(FacingDirectionOf() * Vector(1,-1,1)),ZOf(Normalize(WorldVectorOf(ThrottleOf(),eventPlayer)))),hitnormal);
             define desiredMotion = Vector(XOf(Normalize(WorldVectorOf(ThrottleOf(),eventPlayer))),YOf(FacingDirectionOf() * Vector(1,-1,1)),ZOf(Normalize(WorldVectorOf(ThrottleOf(),eventPlayer)))) - undesiredMotion;
-           point = RayCastHitPosition(point,point + desiredMotion * -0.05);     
+           point = RayCastHitPosition(point,point + desiredMotion * -0.05);
          }
          else
         point = RayCastHitPosition(point,point + Vector(XOf(Normalize(WorldVectorOf(ThrottleOf(),eventPlayer))),YOf(FacingDirectionOf() * Vector(1,-1,1)),ZOf(Normalize(WorldVectorOf(ThrottleOf(),eventPlayer)))) * -0.05);
@@ -749,7 +747,7 @@ while(arcballMode)
         break;
     }
 
-    
+
 }
 StopCamera();
 StopForcingPlayerPosition();
@@ -766,7 +764,7 @@ if(openui == false && arcballMode == false)
 
     //if(arcballMode)
     //arcBallScript()
-    
+
     define closest_beam_firstpos!;
     define closest_beam_secondpos!;
     define closest_beam_firstpoint2!;
@@ -800,7 +798,7 @@ if(openui == false && arcballMode == false)
 
         }
     }
-    
+
     if(cursor_snap_Tool == 1 || cursor_snap_Tool == 2)
     {
      closest_firstpos = FirstOf(SortedArray(FilteredArray(firstpos,IsInLineOfSight(ArrayElement(),EyePosition())),DotProduct(FacingDirectionOf(),DirectionTowards(ArrayElement(),EyePosition()))));
@@ -834,7 +832,7 @@ if(openui == false && arcballMode == false)
             else if((cursor_snap_Tool == 1 || cursor_snap_Tool == 2) && DistanceBetween(EyePosition()+FacingDirectionOf() * DistanceBetween(closestvertices,EyePosition()),closestvertices) < (0.12/4) * ((2*TangentFromRadians(0.7853975/2)) * DistanceBetween(closestvertices,EyePosition())))
             {
                     point = closestvertices;
-                    radius = (0.12/4) * ((2*TangentFromRadians(0.7853975/2)) * DistanceBetween(closestvertices,EyePosition()));  
+                    radius = (0.12/4) * ((2*TangentFromRadians(0.7853975/2)) * DistanceBetween(closestvertices,EyePosition()));
             }
             else if(cursor_snap_Tool == 2 && DistanceBetween(EyePosition()+FacingDirectionOf() * DistanceBetween(closest_beam_intersection,EyePosition()),closest_beam_intersection) < (0.1/4) * ((2*TangentFromRadians(0.7853975/2)) * DistanceBetween(closest_beam_intersection,EyePosition())))
             {
@@ -844,12 +842,12 @@ if(openui == false && arcballMode == false)
 
             else
             {
-               
+
                 radius = 0.1;
                 point = RayCastHitPosition(EyePosition(),EyePosition() + FacingDirectionOf() * 5);
-                
+
             }
-            
+
             LoopIfConditionIsTrue();
 }
 
@@ -890,128 +888,128 @@ Event.OngoingPlayer
 if(ArrayContains([1,3,5],UI_ID) && IsButtonHeld(eventPlayer,Button.Interact))
 {
 
-if(CountOf(vertical_points)==0)
-    {
-        CreateInWorldText(AllPlayers(),DistanceBetween(vertical_points[0],Vector(XOf(point),YOf(vertical_points[0]),ZOf(point))),point,1,Clipping.DoNotClip);
-        measureTextEntity[0]  = LastTextID();
-    }
-   vertical_points[CountOf(vertical_points)] = point;
-        CreateEffect(AllPlayers(),Effect.Sphere,Color.Red,vertical_points[CountOf(vertical_points)-1],0.1,EffectRev.VisibleTo);
-        horizontal_effect_id[CountOf(horizontal_effect_id)] = LastCreatedEntity();
-        Wait(0.3);
-        if(CountOf(vertical_points)==2)
+    if(CountOf(vertical_points)==0)
         {
+            CreateInWorldText(AllPlayers(),DistanceBetween(vertical_points[0],Vector(XOf(point),YOf(vertical_points[0]),ZOf(point))),point,1,Clipping.DoNotClip);
+            measureTextEntity[0]  = LastTextID();
+        }
+    vertical_points[CountOf(vertical_points)] = point;
+    CreateEffect(AllPlayers(),Effect.Sphere,Color.Red,LastOf(vertical_points),0.1,EffectRev.VisibleTo);
+    horizontal_effect_id[CountOf(horizontal_effect_id)] = LastCreatedEntity();
+    Wait(0.3);
+    if(CountOf(vertical_points)==2)
+    {
 
-            define s = Vector(XOf(vertical_points[1]),YOf(vertical_points[0]),ZOf(vertical_points[1]));
-            define beams;
-            CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,vertical_points[0], s+ Vector(-0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
-            beams[CountOf(beams)] = LastCreatedEntity();
+        define s = Vector(XOf(vertical_points[1]),YOf(vertical_points[0]),ZOf(vertical_points[1]));
+        define beams;
+        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,vertical_points[0], s+ Vector(-0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
+        beams[CountOf(beams)] = LastCreatedEntity();
 
-             DestroyInWorldText(measureTextEntity[0]);
+            DestroyInWorldText(measureTextEntity[0]);
 
-            CreateInWorldText(AllPlayers(),DistanceBetween(vertical_points[0],vertical_points[1]),(vertical_points[0]+vertical_points[1])/2,1,Clipping.DoNotClip);
-            measureTextEntity[CountOf(measureTextEntity)]  = LastTextID();
+        CreateInWorldText(AllPlayers(),DistanceBetween(vertical_points[0],vertical_points[1]),(vertical_points[0]+vertical_points[1])/2,1,Clipping.DoNotClip);
+        measureTextEntity[CountOf(measureTextEntity)]  = LastTextID();
 
-            CreateInWorldText(AllPlayers(),DistanceBetween(vertical_points[1],second),(vertical_points[1]+second)/2 + Vector(0,-0.5,0),1,Clipping.DoNotClip);
-            measureTextEntity[CountOf(measureTextEntity)] = LastTextID();
-            Wait(0.016);
+        CreateInWorldText(AllPlayers(),DistanceBetween(vertical_points[1],second),(vertical_points[1]+second)/2 + Vector(0,-0.5,0),1,Clipping.DoNotClip);
+        measureTextEntity[CountOf(measureTextEntity)] = LastTextID();
+        Wait(0.016);
 
-            WaitUntil(!IsButtonHeld(eventPlayer,Button.Interact),999999);
+        WaitUntil(!IsButtonHeld(eventPlayer,Button.Interact),999999);
 
-            CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,s + Vector(0.001,0,0), second,Color.Aqua,EffectRev.VisibleToPositionAndRadius);
-            beams[CountOf(beams)] = LastCreatedEntity();
-            CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,second + Vector(0.001,0,0), second + ((DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1)) * -1)*DistanceBetween(vertical_points[0],vertical_points[1]),Color.Aqua,EffectRev.VisibleToPositionAndRadius);
-            beams[CountOf(beams)] = LastCreatedEntity();
-            CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]), vertical_points[0]+ Vector(0.001,0,0),Color.Aqua,EffectRev.VisibleToPositionAndRadius);
-            beams[CountOf(beams)] = LastCreatedEntity();
+        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,s + Vector(0.001,0,0), second,Color.Aqua,EffectRev.VisibleToPositionAndRadius);
+        beams[CountOf(beams)] = LastCreatedEntity();
+        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,second + Vector(0.001,0,0), second + ((DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1)) * -1)*DistanceBetween(vertical_points[0],vertical_points[1]),Color.Aqua,EffectRev.VisibleToPositionAndRadius);
+        beams[CountOf(beams)] = LastCreatedEntity();
+        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]), vertical_points[0]+ Vector(0.001,0,0),Color.Aqua,EffectRev.VisibleToPositionAndRadius);
+        beams[CountOf(beams)] = LastCreatedEntity();
 
-            while(IsButtonHeld(eventPlayer,Button.Interact) == false)
+        while(IsButtonHeld(eventPlayer,Button.Interact) == false)
+        {
+        //second = s + CrossProduct(DirectionTowards(horizontal_points[0],s),Up()) * (DistanceBetween(horizontal_points[0],point) * -1  * DotProduct(CrossProduct(DirectionTowards(horizontal_points[0],horizontal_points[1]),Up()) * Vector(1,0,1), DirectionTowards(point, horizontal_points[1])));
+        second = s + DirectionTowards(vertical_points[0],point) * Vector(0,1,0) * DistanceBetween(vertical_points[0],point);
+        Wait(0.016);
+        }
+            lastsavedpos[CountOf(lastsavedpos)] = PositionOf();
+            firstpos[CountOf(firstpos)] = vertical_points[0];
+            secondpoint2[CountOf(secondpoint2)] = s;
+            firstpoint2[CountOf(firstpoint2)] = second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]);
+            secondpos[CountOf(secondpos)] = second;
+
+            AllPos[CountOf(AllPos)] = (firstpos[CountOf(firstpos)-1] + second)/2;
+            AllDir[CountOf(AllDir)] = CrossProduct(Down(),DirectionTowards(firstpos[CountOf(firstpos)-1],s)) * Vector(1,0,1);
+
+            Wall_ID[CountOf(Wall_ID)] = UI_ID;
+            g_beamType[CountOf(g_beamType)] = beamType;
+            DestroyEffect(beams[0]);
+            DestroyEffect(beams[1]);
+            DestroyEffect(beams[2]);
+            DestroyEffect(beams[3]);
+            DestroyEffect(horizontal_effect_id[0]);
+            DestroyEffect(horizontal_effect_id[1]);
+
+            if(UI_ID==1 || UI_ID==3)
             {
-            //second = s + CrossProduct(DirectionTowards(horizontal_points[0],s),Up()) * (DistanceBetween(horizontal_points[0],point) * -1  * DotProduct(CrossProduct(DirectionTowards(horizontal_points[0],horizontal_points[1]),Up()) * Vector(1,0,1), DirectionTowards(point, horizontal_points[1])));
-           second = s + DirectionTowards(vertical_points[0],point) * Vector(0,1,0) * DistanceBetween(vertical_points[0],point);
-           Wait(0.016);
+                // if(UI_ID==0)
+                // {
+                // CreateEffect(FilteredArray(AllPlayers(),showwalls == true),Effect.Sphere,Color.Yellow, (firstpos[CountOf(firstpos)-1]+second)/2,0.1,EffectRev.VisibleTo);
+                // beam_ID[CountOf(beam_ID)][0] = LastCreatedEntity();
+                // }
+                // else if(UI_ID==2)
+                // {
+                // CreateEffect(FilteredArray(AllPlayers(),showwalls == true),Effect.Sphere,Color.Purple, (firstpos[CountOf(firstpos)-1]+second)/2,0.1,EffectRev.VisibleTo);
+                //  beam_ID[CountOf(beam_ID)][0] = LastCreatedEntity();
+                // }
+                switch(beamType)
+                {
+                    case 1:
+                    CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,vertical_points[0], s+ Vector(-0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
+                    beam_ID[CountOf(beam_ID)][0] = LastCreatedEntity();
+                    CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,s + Vector(0.001,0,0), second+ Vector(-0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
+                    beam_ID[CountOf(beam_ID)-1][1] = LastCreatedEntity();
+                    CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,second + Vector(0.001,0,0), second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]),Color.Aqua,EffectRev.VisibleTo);
+                    beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
+                    CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]), vertical_points[0]+ Vector(0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
+                    beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
+                    break;
+
+                    case 2:
+                    CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,vertical_points[0], s+ Vector(-0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
+                    beam_ID[CountOf(beam_ID)][0] = LastCreatedEntity();
+                    CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,s + Vector(0.001,0,0), second+ Vector(-0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
+                    beam_ID[CountOf(beam_ID)-1][1] = LastCreatedEntity();
+                    CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,second + Vector(0.001,0,0), second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]),Color.Aqua,EffectRev.VisibleTo);
+                    beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
+                    CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]), vertical_points[0]+ Vector(0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
+                    beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
+                    break;
+
+                    case 3:
+                    CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.BadBeam,vertical_points[0], s+ Vector(-0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
+                    beam_ID[CountOf(beam_ID)][0] = LastCreatedEntity();
+                    CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.BadBeam,s + Vector(0.001,0,0), second+ Vector(-0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
+                    beam_ID[CountOf(beam_ID)-1][1] = LastCreatedEntity();
+                    CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.BadBeam,second + Vector(0.001,0,0), second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]),Color.Aqua,EffectRev.VisibleTo);
+                    beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
+                    CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.BadBeam,second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]), vertical_points[0]+ Vector(0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
+                    beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
+                    break;
+                }
             }
-                lastsavedpos[CountOf(lastsavedpos)] = PositionOf();
-                firstpos[CountOf(firstpos)] = vertical_points[0];
-                secondpoint2[CountOf(secondpoint2)] = s;
+            else if(UI_ID==5)
+            {
+        //CreateEffect(FilteredArray(AllPlayers(),showwalls == true),Effect.Sphere,Color.Yellow, (firstpos[CountOf(firstpos)-1]+second)/2,0.1,EffectRev.VisibleTo);
+        //beam_ID[CountOf(beam_ID)][0] = LastCreatedEntity();
+        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,vertical_points[0], s+ Vector(-0.001,0,0),Color.Red,EffectRev.VisibleTo);
+        beam_ID[CountOf(beam_ID)][0] = LastCreatedEntity();
+        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,s + Vector(0.001,0,0), second+ Vector(-0.001,0,0),Color.Red,EffectRev.VisibleTo);
+        beam_ID[CountOf(beam_ID)-1][1] = LastCreatedEntity();
+        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,second + Vector(0.001,0,0), second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]),Color.Red,EffectRev.VisibleTo);
+        beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
+        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]), vertical_points[0]+ Vector(0.001,0,0),Color.Red,EffectRev.VisibleTo);
+        beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
 
-                firstpoint2[CountOf(firstpoint2)] = second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]);
-                secondpos[CountOf(secondpos)] = second;
-
-                AllPos[CountOf(AllPos)] = (firstpos[CountOf(firstpos)-1] + second)/2;
-                AllDir[CountOf(AllDir)] = CrossProduct(Down(),DirectionTowards(firstpos[CountOf(firstpos)-1],s)) * Vector(1,0,1);
-                Wall_ID[CountOf(Wall_ID)] = UI_ID;
-                g_beamType[CountOf(g_beamType)] = beamType;
-                DestroyEffect(beams[0]);
-                DestroyEffect(beams[1]);
-                DestroyEffect(beams[2]);
-                DestroyEffect(beams[3]);
-                DestroyEffect(horizontal_effect_id[0]);
-                DestroyEffect(horizontal_effect_id[1]);
-
-                if(UI_ID==1 || UI_ID==3)
-                {
-                    // if(UI_ID==0)
-                    // {
-                    // CreateEffect(FilteredArray(AllPlayers(),showwalls == true),Effect.Sphere,Color.Yellow, (firstpos[CountOf(firstpos)-1]+second)/2,0.1,EffectRev.VisibleTo);
-                    // beam_ID[CountOf(beam_ID)][0] = LastCreatedEntity();
-                    // }
-                    // else if(UI_ID==2)
-                    // {
-                    // CreateEffect(FilteredArray(AllPlayers(),showwalls == true),Effect.Sphere,Color.Purple, (firstpos[CountOf(firstpos)-1]+second)/2,0.1,EffectRev.VisibleTo);
-                    //  beam_ID[CountOf(beam_ID)][0] = LastCreatedEntity();
-                    // }
-                    switch(beamType)
-                    {
-                        case 1:
-                        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,vertical_points[0], s+ Vector(-0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
-                        beam_ID[CountOf(beam_ID)][0] = LastCreatedEntity();
-                        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,s + Vector(0.001,0,0), second+ Vector(-0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
-                        beam_ID[CountOf(beam_ID)-1][1] = LastCreatedEntity();
-                        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,second + Vector(0.001,0,0), second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]),Color.Aqua,EffectRev.VisibleTo);
-                        beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
-                        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]), vertical_points[0]+ Vector(0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
-                        beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
-                        break;
-
-                        case 2:
-                        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,vertical_points[0], s+ Vector(-0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
-                        beam_ID[CountOf(beam_ID)][0] = LastCreatedEntity();
-                        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,s + Vector(0.001,0,0), second+ Vector(-0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
-                        beam_ID[CountOf(beam_ID)-1][1] = LastCreatedEntity();
-                        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,second + Vector(0.001,0,0), second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]),Color.Aqua,EffectRev.VisibleTo);
-                        beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
-                        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]), vertical_points[0]+ Vector(0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
-                        beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
-                        break;
-
-                        case 3:
-                        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.BadBeam,vertical_points[0], s+ Vector(-0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
-                        beam_ID[CountOf(beam_ID)][0] = LastCreatedEntity();
-                        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.BadBeam,s + Vector(0.001,0,0), second+ Vector(-0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
-                        beam_ID[CountOf(beam_ID)-1][1] = LastCreatedEntity();
-                        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.BadBeam,second + Vector(0.001,0,0), second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]),Color.Aqua,EffectRev.VisibleTo);
-                        beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
-                        CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.BadBeam,second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]), vertical_points[0]+ Vector(0.001,0,0),Color.Aqua,EffectRev.VisibleTo);
-                        beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
-                        break;
-                    }
-                }
-                else if(UI_ID==5)
-                {
-            //CreateEffect(FilteredArray(AllPlayers(),showwalls == true),Effect.Sphere,Color.Yellow, (firstpos[CountOf(firstpos)-1]+second)/2,0.1,EffectRev.VisibleTo);
-            //beam_ID[CountOf(beam_ID)][0] = LastCreatedEntity();
-            CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,vertical_points[0], s+ Vector(-0.001,0,0),Color.Red,EffectRev.VisibleTo);
-            beam_ID[CountOf(beam_ID)][0] = LastCreatedEntity();
-            CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,s + Vector(0.001,0,0), second+ Vector(-0.001,0,0),Color.Red,EffectRev.VisibleTo);
-            beam_ID[CountOf(beam_ID)-1][1] = LastCreatedEntity();
-            CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,second + Vector(0.001,0,0), second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]),Color.Red,EffectRev.VisibleTo);
-            beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
-            CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,second + -1*(DirectionTowards(vertical_points[0],vertical_points[1])* Vector(1,0,1))*DistanceBetween(vertical_points[0],vertical_points[1]), vertical_points[0]+ Vector(0.001,0,0),Color.Red,EffectRev.VisibleTo);
-            beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
-                
-                }
-        vertical_points = EmptyArray(); 
+            }
+        vertical_points = EmptyArray();
         horizontal_effect_id = EmptyArray();
 
         for(define tempcount =0;3;1)
@@ -1109,7 +1107,7 @@ if(ArrayContains([2,6,7],UI_ID)&& IsButtonHeld(eventPlayer,Button.Interact))
                      CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,second, secondpoint2[CountOf(secondpoint2)-1],Color.Aqua,EffectRev.VisibleTo);
                      beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
                      CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,secondpoint2[CountOf(secondpoint2)-1], horizontal_points[0],Color.Aqua,EffectRev.VisibleTo);
-                     beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+                     beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
                      break;
 
                      case 2:
@@ -1122,7 +1120,7 @@ if(ArrayContains([2,6,7],UI_ID)&& IsButtonHeld(eventPlayer,Button.Interact))
                      CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,second, secondpoint2[CountOf(secondpoint2)-1],Color.Aqua,EffectRev.VisibleTo);
                      beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
                      CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,secondpoint2[CountOf(secondpoint2)-1], horizontal_points[0],Color.Aqua,EffectRev.VisibleTo);
-                     beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+                     beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
                      break;
 
                      case 3:
@@ -1135,7 +1133,7 @@ if(ArrayContains([2,6,7],UI_ID)&& IsButtonHeld(eventPlayer,Button.Interact))
                      CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.BadBeam,second, secondpoint2[CountOf(secondpoint2)-1],Color.Aqua,EffectRev.VisibleTo);
                      beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
                      CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.BadBeam,secondpoint2[CountOf(secondpoint2)-1], horizontal_points[0],Color.Aqua,EffectRev.VisibleTo);
-                     beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+                     beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
                      break;
                 }
             }
@@ -1152,11 +1150,11 @@ if(ArrayContains([2,6,7],UI_ID)&& IsButtonHeld(eventPlayer,Button.Interact))
             beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
 
              CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,secondpoint2[CountOf(secondpoint2)-1], horizontal_points[0],Color.Red,EffectRev.VisibleTo);
-            beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+            beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
             }
-            
 
-            horizontal_points = EmptyArray(); 
+
+            horizontal_points = EmptyArray();
             horizontal_effect_id = EmptyArray();
 
             for(define tempcount =0;3;1)
@@ -1189,7 +1187,7 @@ if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 4)
         horizontal_effect_id[CountOf(horizontal_effect_id)] = LastCreatedEntity();
         Wait(0.3);
         if(CountOf(horizontal_points)==2)
-        {   
+        {
             define angle;
             define seconds;
             DestroyInWorldText(measureTextEntity[0]);
@@ -1224,7 +1222,7 @@ if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 4)
             second = s + CrossProduct(DirectionTowards(horizontal_points[0],s),CrossProduct(DirectionTowards(horizontal_points[0],s),-1  * DirectionTowards(horizontal_points[0],point))) * (DistanceBetween(horizontal_points[0],point) );
             seconds = second + -1  * (DirectionTowards(horizontal_points[0],horizontal_points[1])* Vector(1,0,1))*DistanceBetween(horizontal_points[0],horizontal_points[1]);
             //angle = AngleBetweenVectors(Down(),-CrossProduct(DirectionTowards(horizontal_points[0],second),DirectionTowards(horizontal_points[0],horizontal_points[1])));
-            angle = AngleBetweenVectors(Down(),-Normalize(CrossProduct(-CrossProduct(DirectionTowards(horizontal_points[0],seconds) * DotProduct(Down(),DirectionTowards(horizontal_points[0],seconds)),Up()),DirectionTowards(horizontal_points[0],seconds) * DotProduct(Up(),DirectionTowards(horizontal_points[0],seconds)))));
+            angle = AngleBetweenVectors(Down(),-1*Normalize(CrossProduct(-1*CrossProduct(DirectionTowards(horizontal_points[0],seconds) * DotProduct(Down(),DirectionTowards(horizontal_points[0],seconds)),Up()),DirectionTowards(horizontal_points[0],seconds) * DotProduct(Up(),DirectionTowards(horizontal_points[0],seconds)))));
             Wait(0.016);
             }
 
@@ -1246,8 +1244,8 @@ if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 4)
             //AllDir[CountOf(AllDir)] = CrossProduct(Left(),DirectionTowards(horizontal_points[0],firstpoint2[CountOf(firstpoint2)-1]));
 
             //AllDir[CountOf(AllDir)] = -CrossProduct(DirectionTowards(horizontal_points[0],s),DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1]));
-            
-            AllDir[CountOf(AllDir)] = Normalize(CrossProduct(-CrossProduct(DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1]) * DotProduct(Down(),DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1])),Up()),DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1]) * DotProduct(Up(),DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1]))));
+
+            AllDir[CountOf(AllDir)] = Normalize(CrossProduct(-1*CrossProduct(DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1]) * DotProduct(Down(),DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1])),Up()),DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1]) * DotProduct(Up(),DirectionTowards(horizontal_points[0],secondpoint2[CountOf(secondpoint2)-1]))));
             Wall_ID[CountOf(Wall_ID)] = UI_ID;
             ///^Slope Normal = Cross(LeftOfSlope, UpOfSlope)
             // if(SineFromDegrees(AngleBetweenVectors(Down(),-AllDir[CountOf(AllDir)-1])) <= 2)
@@ -1280,7 +1278,7 @@ if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 4)
                  beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
 
                  CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,secondpoint2[CountOf(secondpoint2)-1]+ Vector(0,0,0.001), horizontal_points[0],Color.Aqua,EffectRev.VisibleTo);
-                 beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+                 beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
                  break;
 
                  case 2:
@@ -1293,7 +1291,7 @@ if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 4)
                  beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
 
                  CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,secondpoint2[CountOf(secondpoint2)-1]+ Vector(0,0,0.001), horizontal_points[0],Color.Aqua,EffectRev.VisibleTo);
-                 beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+                 beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
                  break;
 
                  case 3:
@@ -1306,16 +1304,16 @@ if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 4)
                  beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
 
                  CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.BadBeam,secondpoint2[CountOf(secondpoint2)-1]+ Vector(0,0,0.001), horizontal_points[0],Color.Aqua,EffectRev.VisibleTo);
-                 beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+                 beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
                  break;
-                 
+
             }
-           
 
 
-            horizontal_points = EmptyArray(); 
+
+            horizontal_points = EmptyArray();
             horizontal_effect_id = EmptyArray();
-            
+
             for(define tempcount =0;4;1)
             {
                 DestroyInWorldText(measureTextEntity[tempcount]);
@@ -1423,7 +1421,7 @@ if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 8)
                  beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
 
                  CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,secondpoint2[CountOf(secondpoint2)-1]+ Vector(0,0,0.001), horizontal_points[0],Color.Aqua,EffectRev.VisibleTo);
-                 beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+                 beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
                  break;
 
                  case 2:
@@ -1436,7 +1434,7 @@ if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 8)
                  beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
 
                  CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,secondpoint2[CountOf(secondpoint2)-1]+ Vector(0,0,0.001), horizontal_points[0],Color.Aqua,EffectRev.VisibleTo);
-                 beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+                 beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
                  break;
 
                  case 3:
@@ -1449,14 +1447,14 @@ if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 8)
                  beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
 
                  CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.BadBeam,secondpoint2[CountOf(secondpoint2)-1]+ Vector(0,0,0.001), horizontal_points[0],Color.Aqua,EffectRev.VisibleTo);
-                 beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+                 beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
                  break;
-                 
+
             }
-           
 
 
-            horizontal_points = EmptyArray(); 
+
+            horizontal_points = EmptyArray();
             horizontal_effect_id = EmptyArray();
 
             for(define tempcount =0;4;1)
@@ -1473,7 +1471,7 @@ if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 8)
 
 
 
-//Sphere 
+//Sphere
 rule: "Sphere"
 Event.OngoingPlayer
 if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 9)
@@ -1507,8 +1505,8 @@ if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 9)
 }
 
 
-//Teleporter 
-rule: "Teleporter" 
+//Teleporter
+rule: "Teleporter"
 Event.OngoingPlayer
 if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 10)
 {
@@ -1520,26 +1518,26 @@ if(IsButtonHeld(eventPlayer,Button.Interact) && UI_ID == 10)
          teleport_effect_ID[CountOf(teleport_effect_ID)] = LastCreatedEntity();
          CreateBeamEffect(AllPlayers(),BeamType.GrappleBeam,teleport_temp_point[CountOf(teleport_temp_point)-1],point);
          teleport_beameffect_ID = LastCreatedEntity();
-         
-    
+
+
     Wait(0.3);
     define tempDirection;
     while(!IsButtonHeld(eventPlayer,Button.Interact))
     {
         Wait(0.016);
-        tempDirection = DirectionTowards(teleport_temp_point[CountOf(teleport_temp_point)-1],point); 
+        tempDirection = DirectionTowards(teleport_temp_point[CountOf(teleport_temp_point)-1],point);
     }
     teleportDirection[CountOf(teleportDirection)] = tempDirection;
     DestroyEffect(teleport_beameffect_ID);
-       
+
         if(CountOf(teleport_temp_point)==2)
         {
                 teleportPos[CountOf(teleportPos)] = teleport_temp_point[0];
                 teleportPos[CountOf(teleportPos)] = teleport_temp_point[1];
                 // CreateEffect(AllPlayers(),Effect.GoodAura,Color.Red,teleport_temp_point[CountOf(teleport_temp_point)-1],1.5,EffectRev.VisibleTo);
                 // teleport_effect_ID[CountOf(teleport_effect_ID)] = LastCreatedEntity();
-            
-            teleport_temp_point = EmptyArray(); 
+
+            teleport_temp_point = EmptyArray();
 
             //Wait(0.5);
 
@@ -1631,11 +1629,11 @@ if(flymode)
                 ApplyImpulse(eventPlayer, Up(), 0.001);
                 if(IsButtonHeld(eventPlayer,Button.Jump)== false)
                 ApplyImpulse(eventPlayer, Down(), 0.001);
-                
+
             }
-           
-            
-            
+
+
+
         }
 
         if(IsButtonHeld(eventPlayer,Button.Jump))
@@ -1717,7 +1715,7 @@ if(showwalls)
                 break;
 
                 }
-           
+
             }
         }
         else if(ArrayContains([2,4,6,7,8],Wall_ID[x]))
@@ -1794,7 +1792,7 @@ if(showwalls)
 }
 
 }
-    
+
 
 
 
@@ -1840,7 +1838,7 @@ if(start_mirror)
     }
     if(temp_Selected_Wall != Selected_Wall_Click)
     {
-        
+
         define index_Mirror2 = IndexOfArrayValue(AllPos,Selected_Wall_Click);
         // define intersection_length = DotProduct(AllPos[z] - fullbodypos,AllDir[z]) / DotProduct(DirectionTowards(lastsavedpos,fullbodypos) , AllDir[z]);
         // prevpos_intersection = RayCastHitPosition(fullbodypos,fullbodypos + (DirectionTowards(lastsavedpos,fullbodypos)) * intersection_length);
@@ -1887,7 +1885,7 @@ if(start_mirror)
                     beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
 
                     CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,all_tempCorners[3]+ Vector(0,0,0.001), all_tempCorners[0],Color.Red,EffectRev.VisibleTo);
-                    beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+                    beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
             }
             else
             {
@@ -1903,7 +1901,7 @@ if(start_mirror)
                     beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
 
                     CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,all_tempCorners[3]+ Vector(0,0,0.001), all_tempCorners[0],Color.Aqua,EffectRev.VisibleTo);
-                    beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+                    beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
                     break;
 
                     case 2:
@@ -1916,7 +1914,7 @@ if(start_mirror)
                     beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
 
                     CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,all_tempCorners[3]+ Vector(0,0,0.001), all_tempCorners[0],Color.Aqua,EffectRev.VisibleTo);
-                    beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+                    beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
                     break;
 
                     case 3:
@@ -1929,14 +1927,14 @@ if(start_mirror)
                     beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
 
                     CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.BadBeam,all_tempCorners[3]+ Vector(0,0,0.001), all_tempCorners[0],Color.Aqua,EffectRev.VisibleTo);
-                    beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+                    beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
                     break;
-                    
+
                 }
             }
 
-        
-                 
+
+
 
 
             // firstpos[CountOf(firstpos)] = horizontal_points[0];
@@ -1967,7 +1965,7 @@ if(start_mirror)
             //      beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
 
             //      CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GrappleBeam,secondpoint2[CountOf(secondpoint2)-1]+ Vector(0,0,0.001), horizontal_points[0],Color.Aqua,EffectRev.VisibleTo);
-            //      beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+            //      beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
             //      break;
 
             //      case 2:
@@ -1980,7 +1978,7 @@ if(start_mirror)
             //      beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
 
             //      CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.GoodBeam,secondpoint2[CountOf(secondpoint2)-1]+ Vector(0,0,0.001), horizontal_points[0],Color.Aqua,EffectRev.VisibleTo);
-            //      beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+            //      beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
             //      break;
 
             //      case 3:
@@ -1993,9 +1991,9 @@ if(start_mirror)
             //      beam_ID[CountOf(beam_ID)-1][2] = LastCreatedEntity();
 
             //      CreateBeamEffect(FilteredArray(AllPlayers(),showwalls == true),BeamType.BadBeam,secondpoint2[CountOf(secondpoint2)-1]+ Vector(0,0,0.001), horizontal_points[0],Color.Aqua,EffectRev.VisibleTo);
-            //      beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity(); 
+            //      beam_ID[CountOf(beam_ID)-1][3] = LastCreatedEntity();
             //      break;
-                 
+
             // }
     }
 }
@@ -2008,10 +2006,10 @@ Event.OngoingPlayer
 
 
     //CreateEffect(eventPlayer,Effect.Sphere,Color.Red, EyePosition() + FacingDirectionOf() * (DotProduct(AllPos[z] - EyePosition(),AllDir[z]) / DotProduct(AllDir[z], AllDir[z])),0.1);
- 
+
  // define intersection_length = DotProduct(AllPos[z] - fullbodypos,AllDir[z]) / DotProduct(DirectionTowards(lastsavedpos,fullbodypos) , AllDir[z]);
      //prevpos_intersection = RayCastHitPosition(fullbodypos,fullbodypos + (DirectionTowards(lastsavedpos,fullbodypos)) * intersection_length);
-    
+
     //CreateHudText(eventPlayer,ServerLoad());
     //CreateHudText(eventPlayer,AngleBetweenVectors(AllDir,DirectionTowards(AllPos,eventPlayer)));
     //  CreateHudText(eventPlayer,<"Current Pos <0>",PositionOf()>);
@@ -2027,7 +2025,7 @@ Event.OngoingPlayer
 
     }
 
-   
+
     CreateEffect(AllPlayers(),Effect.Sphere,Color.White, point,radius);
     //CreateEffect(AllPlayers(),Effect.Sphere,Color.Red, filterpos,0.1);
 
@@ -2099,7 +2097,7 @@ define wallstring = [
      CreateInWorldText(FilteredArray(eventPlayer,openui && page==1),"-Reset ALL-", UpdateEveryFrame(ScreenToWorldForPlayer(eventPlayer,-0.8,0.5)+ Vector(0,-0.4,0)),1,Clipping.DoNotClip,InworldTextRev.VisibleToPositionAndString,Color.Green);
 
     CreateInWorldText(FilteredArray(eventPlayer,openui && page==1),showwalls? "-Hide ALL Wall-" : "-Show ALL Wall-",UpdateEveryFrame(ScreenToWorldForPlayer(eventPlayer,0,0.5)+ Vector(0,-0.4,0)),1,Clipping.DoNotClip,InworldTextRev.VisibleToPositionStringAndColor,showwalls? Color.Green : Color.Orange);
-   
+
 
     CreateInWorldText(FilteredArray(eventPlayer,openui && page==1),wallstring[UI_ID],UpdateEveryFrame(ScreenToWorldForPlayer(eventPlayer,0.8,0.5)+ Vector(0,-0.4,0)),1,Clipping.DoNotClip,InworldTextRev.VisibleToPositionAndString,Color.Green);
     // CreateInWorldText(FilteredArray(eventPlayer,openui && UI_ID==1 && page==1),"Current Wall: \n\n-Vertical Wall-", UpdateEveryFrame(RayCastHitPosition(EyePosition(),EyePosition() + DirectionFromAngles(HorizontalAngleFromDirection(UI_FacingDir)-15,VerticalAngleFromDirection(UI_FacingDir)-5) * 5)+ Vector(0,-0.3,0)),1,Clipping.DoNotClip,InworldTextRev.VisibleToPositionAndString,Color.Green);
@@ -2144,7 +2142,7 @@ define wallstring = [
     CreateHudText(eventPlayer,<"Position Of: <0>",PositionOf()>,null,null,Location.Left,0,Color.White,Color.Orange,Color.White);
     CreateHudText(eventPlayer,null,<"Walls Made: <0>",CountOf(AllPos)>,null,Location.Top,100,Color.Orange,Color.Orange,Color.Orange);
     CreateHudText(eventPlayer,null,<"Objects Made: <0>",CountOf(teleportPos)>,null,Location.Top,101,Color.Orange,Color.Orange,Color.Orange);
-    
+
      CreateHudText(eventPlayer,null,"Created By: Yurodd\n     Grandeur Hammers\nbit.ly/GHammersDiscord",null,Location.Right,0,Color.Aqua,Color.Orange,Color.White);
      CreateHudText(FilteredArray(eventPlayer,openui == false && arcballMode == false),null,null," \n\n\n\n\n\n\n\n\n\n\n\n    ProTip:\n-Melee to open menu",Location.Right,10,Color.Aqua,Color.Red,Color.White);
      CreateHudText(FilteredArray(eventPlayer,UI_ID != 0 && openui && page==1 && point == UIVector[2]),null,null," \n\n\n\n\n\n\n\n\n\n\n\n    ProTip:\n-Select 2 Points first by Pressing F\n-Secondary Fire to go to prev selection",Location.Right,10,Color.Aqua,Color.Red,Color.White);
@@ -2174,7 +2172,7 @@ define UpAxis(Vector zAxis): DirectionFromAngles(HorizontalAngleFromDirection(zA
 define RightAxis(Vector zAxis): CrossProduct(zAxis, UpAxis(zAxis));
 
 define ScreenToWorldForPlayer(define player, define x, define y): ScreenToWorld(EyePosition(player), UI_FacingDir, x, y);
-define ScreenToWorld(Vector position, Vector zAxis, define x, define y): RayCastHitPosition(position,position + 2 *(x*RightAxis(zAxis) + (y-0.2)*UpAxis(zAxis) + 3*zAxis));
+define ScreenToWorld(Vector position, Vector zAxis, define x, define y): RayCastHitPosition(position,<Vector>(position + 2 * (x * RightAxis(zAxis) + (y-0.2) * UpAxis(zAxis) + 3 * zAxis)));
 
 rule: "IWT Pos"
 Event.OngoingPlayer
@@ -2184,8 +2182,8 @@ if(openui)
     //DestroyAllHudText();
     //Wait(0.016);
     UI_FacingDir = FacingDirectionOf();
-    
-   
+
+
     while(openui)
     {
     //Reset
@@ -2261,7 +2259,7 @@ if(openui && IsAlive())
     define page2index;
     if(page == 1)
     {
-        define slice = 
+        define slice =
         [
             UIVector[0],//Reset
             UIVector[1],//Hide Wall
@@ -2273,9 +2271,9 @@ if(openui && IsAlive())
             UIVector[7],//Flymode
             UIVector[8]//Next Page
             //UIVector[13] //Mirror
-            
+
         ];
-       
+
        // define slice = ArraySlice(UIVector,0,9);
         //slice[CountOf(slice)] = UIVector[13];
         point = FirstOf(SortedArray(slice,DotProduct(FacingDirectionOf(),DirectionTowards(ArrayElement(),EyePosition()))));
@@ -2291,7 +2289,7 @@ if(openui && IsAlive())
     // point = FirstOf(SortedArray(FilteredArray(UIVector,CurrentArrayIndex()>=8),DotProduct(FacingDirectionOf(),DirectionTowards(ArrayElement(),EyePosition()))));
     // }
     //point = FirstOf(SortedArray(UIVector,DotProduct(FacingDirectionOf(),DirectionTowards(ArrayElement(),EyePosition()))));
-    
+
         if(UI_SelectWall && (CountOf(AllPos) > 0 || CountOf(teleportPos) > 0))
         {
             Selected_Wall =  FirstOf(SortedArray(Append(AllPos,teleportPos),DotProduct(FacingDirectionOf(),DirectionTowards(ArrayElement(),EyePosition()))));
@@ -2303,8 +2301,8 @@ if(openui && IsAlive())
             }
             else
             closestSelection = [point,Selected_Wall];
-            
-            closestSelection = FirstOf(SortedArray(closestSelection,DistanceBetween(ArrayElement(),EyePosition()+FacingDirectionOf()*DistanceBetween(EyePosition(),ArrayElement())))); 
+
+            closestSelection = FirstOf(SortedArray(closestSelection,DistanceBetween(ArrayElement(),EyePosition()+FacingDirectionOf()*DistanceBetween(EyePosition(),ArrayElement()))));
             point = closestSelection;
         }
         else
@@ -2322,7 +2320,7 @@ if(openui && IsAlive())
 
             switch(IndexOfArrayValue(UIVector,point))
             {
-                case 0 : 
+                case 0 :
                 confirmcount++;
                     if(confirmcount == 3)
                     {
@@ -2338,11 +2336,11 @@ if(openui && IsAlive())
                 case 1 : showwalls = !showwalls; break;
                 //case 2 : UI_wallDirection = !UI_wallDirection; break;
                 case 2 :
-                     if(IsButtonHeld(eventPlayer,Button.PrimaryFire)) 
-                   UI_ID = Modulo(UI_ID+1,11); 
-                    else if(IsButtonHeld(eventPlayer,Button.SecondaryFire)) 
+                     if(IsButtonHeld(eventPlayer,Button.PrimaryFire))
+                   UI_ID = Modulo(UI_ID+1,11);
+                    else if(IsButtonHeld(eventPlayer,Button.SecondaryFire))
                     {
-                    UI_ID = Modulo(11+UI_ID-1,11); 
+                    UI_ID = Modulo(11+UI_ID-1,11);
                     }
                      break;
                 case 4 :
@@ -2369,13 +2367,13 @@ if(openui && IsAlive())
                     }
                     break;
 
-                case 5 : 
+                case 5 :
                     if( UI_SelectWall&& Selected_Wall_Click!=0)
                     {
                         if(ArrayContains(AllPos,Selected_Wall_Click))
                         {
                         define ID = IndexOfArrayValue(AllPos,Selected_Wall_Click);
-                        
+
                          for(define tempeffectcounter =0; 4;1)
                         {
                             DestroyEffect(beam_ID[ID][tempeffectcounter]);
@@ -2389,7 +2387,7 @@ if(openui && IsAlive())
                         secondpoint2 = FilteredArray(secondpoint2,CurrentArrayIndex() != ID);
                         Wall_ID = FilteredArray(Wall_ID,CurrentArrayIndex() != ID);
                         active_wall = FilteredArray(active_wall,CurrentArrayIndex() != ID);
-                        g_beamType = FilteredArray(g_beamType,CurrentArrayIndex() != ID);  
+                        g_beamType = FilteredArray(g_beamType,CurrentArrayIndex() != ID);
                         }
                         else
                         {
@@ -2401,20 +2399,20 @@ if(openui && IsAlive())
 
                                      DestroyEffect(teleport_effect_ID[ID]);//bookmark
                                      DestroyEffect(teleport_effect_ID[ID+1]);
-                                     teleportPos = FilteredArray(teleportPos,CurrentArrayIndex() != ID && CurrentArrayIndex() != ID+1); 
-                                     teleportDirection = FilteredArray(teleportDirection,CurrentArrayIndex() != ID && CurrentArrayIndex() != ID+1); 
-                                     teleport_effect_ID = FilteredArray(teleport_effect_ID,CurrentArrayIndex() != ID && CurrentArrayIndex() != ID+1); 
-                                    
+                                     teleportPos = FilteredArray(teleportPos,CurrentArrayIndex() != ID && CurrentArrayIndex() != ID+1);
+                                     teleportDirection = FilteredArray(teleportDirection,CurrentArrayIndex() != ID && CurrentArrayIndex() != ID+1);
+                                     teleport_effect_ID = FilteredArray(teleport_effect_ID,CurrentArrayIndex() != ID && CurrentArrayIndex() != ID+1);
+
                                 }
                                 else if(Modulo(ID,2) == 1) //odd
                                 {
                                      DestroyEffect(teleport_effect_ID[ID]);//bookmark
                                      DestroyEffect(teleport_effect_ID[ID-1]);
-                                     teleportPos = FilteredArray(teleportPos,CurrentArrayIndex() != ID && CurrentArrayIndex() != ID-1); 
-                                     teleportDirection = FilteredArray(teleportDirection,CurrentArrayIndex() != ID && CurrentArrayIndex() != ID-1); 
-                                     teleport_effect_ID = FilteredArray(teleport_effect_ID,CurrentArrayIndex() != ID && CurrentArrayIndex() != ID-1); 
+                                     teleportPos = FilteredArray(teleportPos,CurrentArrayIndex() != ID && CurrentArrayIndex() != ID-1);
+                                     teleportDirection = FilteredArray(teleportDirection,CurrentArrayIndex() != ID && CurrentArrayIndex() != ID-1);
+                                     teleport_effect_ID = FilteredArray(teleport_effect_ID,CurrentArrayIndex() != ID && CurrentArrayIndex() != ID-1);
                                 }
-                            
+
                         }
 
                         /* AllPos[ID] = 0;
@@ -2456,7 +2454,7 @@ if(openui && IsAlive())
                     SetAllowedHeroes(eventPlayer,RemoveFromArray(AllHeroes(),HeroOf()));
                     Wait(1);
                     SetAllowedHeroes(eventPlayer,AllHeroes());
-                    
+
                     while(HeroOf()==false)
                     {
                         Wait(0.016);
@@ -2464,13 +2462,13 @@ if(openui && IsAlive())
                     Teleport(eventPlayer,saved_pos);
                     break;
                 case 7:  flymode = !flymode; break;
-                case 8: 
+                case 8:
                     if(page==1)
                     page=2;
                     else if(page==2)
                     page=1;
                     break;
-                case 9: 
+                case 9:
                 define prev_beam_id;
                  define tempeffectid;
                  define tempbeamid;
@@ -2478,7 +2476,7 @@ if(openui && IsAlive())
                     if(HostPlayer() == eventPlayer)
                     {
                     EnableInspectorRecording();
-                    SmallMessage(eventPlayer,"Compiled"); 
+                    SmallMessage(eventPlayer,"Compiled");
                     AllPos = AllPos;
                     AllDir = AllDir;
                     firstpos = firstpos;
@@ -2492,7 +2490,7 @@ if(openui && IsAlive())
                     beam_ID = 0;
                     tempstrafetoggle =strafeToggle;
                     strafeToggle = null;
-                    
+
                     teleportPos = teleportPos;
                     teleportDirection = teleportDirection;
                     tempeffectid = teleport_effect_ID;
@@ -2508,7 +2506,7 @@ if(openui && IsAlive())
                     DisableInspectorRecording();
                     }
                     else
-                    SmallMessage(eventPlayer,"NO U Aint De Host"); 
+                    SmallMessage(eventPlayer,"NO U Aint De Host");
 
                     strafeToggle = tempstrafetoggle;
                     beam_ID = prev_beam_id;
@@ -2516,11 +2514,11 @@ if(openui && IsAlive())
                     teleport_beameffect_ID = tempbeamid;
                     destroyall = false;
                     break;
-                case 10: 
-                    if(IsButtonHeld(eventPlayer,Button.PrimaryFire)) 
-                   cursor_snap_Tool = Modulo(cursor_snap_Tool+1,3); 
-                    else if(IsButtonHeld(eventPlayer,Button.SecondaryFire)) 
-                    cursor_snap_Tool = Modulo(3+cursor_snap_Tool-1,3); 
+                case 10:
+                    if(IsButtonHeld(eventPlayer,Button.PrimaryFire))
+                   cursor_snap_Tool = Modulo(cursor_snap_Tool+1,3);
+                    else if(IsButtonHeld(eventPlayer,Button.SecondaryFire))
+                    cursor_snap_Tool = Modulo(3+cursor_snap_Tool-1,3);
 
                     if(cursor_snap_Tool ==2)
                     {
@@ -2530,19 +2528,19 @@ if(openui && IsAlive())
                     else
                     DestroyEffect(beam_Cursor_ID);
                      break;
-                case 11:  
-                    if(IsButtonHeld(eventPlayer,Button.PrimaryFire)) 
+                case 11:
+                    if(IsButtonHeld(eventPlayer,Button.PrimaryFire))
                     beamType++;
-                    else if(IsButtonHeld(eventPlayer,Button.SecondaryFire)) 
+                    else if(IsButtonHeld(eventPlayer,Button.SecondaryFire))
                     beamType--;
                     break;
 
                 case 12: arcballMode = !arcballMode; break;
 
-                case 13: 
+                case 13:
                     if(UI_SelectWall&& Selected_Wall_Click!=0)
                     {
-                    start_mirror = true; 
+                    start_mirror = true;
                     Wait(0.2);
                     }
                     else
@@ -2560,9 +2558,9 @@ if(openui && IsAlive())
                 else if(beamType < 1)
                 beamType = 3;
 
-             Wait(0.3); 
+             Wait(0.3);
         }
-        
+
         else if(ArrayContains(Append(AllPos,teleportPos),closestSelection))
         {
             Selected_Wall_Click = Selected_Wall;
@@ -2638,7 +2636,7 @@ define sttr: DotProduct(DirectionTowards(secondpos[z],Vector(XOf(secondpos[z]),Y
 //define ftbl2: DotProduct(DirectionTowards(firstpos[z],Vector(XOf(firstpos[z]),YOf(firstpos[z]),ZOf(secondpos[z]))),DirectionTowards(firstpos[z],filterpos));
 //define fttr2: DotProduct(DirectionTowards(firstpos[z],Vector(XOf(secondpos[z]),YOf(firstpos[z]),ZOf(firstpos[z]))),DirectionTowards(firstpos[z],filterpos));
 //define stbl2: DotProduct(DirectionTowards(secondpos[z],Vector(XOf(firstpos[z]),YOf(firstpos[z]),ZOf(secondpos[z]))),DirectionTowards(secondpos[z],filterpos));
-//define sttr2: DotProduct(DirectionTowards(secondpos[z],Vector(XOf(secondpos[z]),YOf(firstpos[z]),ZOf(firstpos[z]))),DirectionTowards(secondpos[z],filterpos)); 
+//define sttr2: DotProduct(DirectionTowards(secondpos[z],Vector(XOf(secondpos[z]),YOf(firstpos[z]),ZOf(firstpos[z]))),DirectionTowards(secondpos[z],filterpos));
 
 define ftbl2: DotProduct(DirectionTowards(firstpos[z],firstpoint2[z]),DirectionTowards(firstpos[z],filterpos));
 define fttr2: DotProduct(DirectionTowards(firstpos[z],secondpoint2[z]),DirectionTowards(firstpos[z],filterpos));
